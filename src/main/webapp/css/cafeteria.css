@@ -1,0 +1,73 @@
+/* styles.css */
+
+/* Estilos básicos para el cuerpo */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    padding: 20px;
+}
+
+/* Tabla de menú (solo afecta a las tablas dentro del body) */
+body .menu-table {
+    width: 80%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Solo afecta a las celdas dentro del cuerpo */
+body .menu-table th, body .menu-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+body .menu-table th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Estilo para las filas de detalles (inicialmente ocultas) */
+body .details {
+    display: none; /* Ocultar detalles por defecto */
+    background-color: #f9f9f9;
+}
+
+/* Estilo para el botón de mostrar detalles */
+body .toggle-btn {
+    color: #2196F3;
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+body .toggle-btn:hover {
+    color: #0d8bde;
+}
+
+/* Animación para mostrar/ocultar las filas de detalles */
+body .details {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Estilos adicionales para mejorar la visualización */
+body ul {
+    padding-left: 20px;
+}
+
+body li {
+    margin-bottom: 5px;
+}

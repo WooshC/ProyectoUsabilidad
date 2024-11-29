@@ -1,0 +1,23 @@
+/* CSS Personalizado */
+body {
+    font-family: 'Inter', sans-serif;
+}
+.bg-gray-800 {
+    background-color: #2d3748; /* Color gris oscuro */
+}
+.text-white {
+    color: white;
+}
+.p-4 {
+    padding: 1rem; /* Espaciado */
+}
+.mt-8 {
+    margin-top: 2rem; /* Margen superior */
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.text-center {
+    text-align: center; /* Centrar texto */
+}

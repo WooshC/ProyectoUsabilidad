@@ -1,0 +1,38 @@
+services:
+  mysql:
+    container_name: mysql_usabilidad
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: javaweb
+    volumes:
+      - ./deploy/my.cnf:/etc/mysql/conf.d/my.cnf:ro  # Volumen de solo lectura
+      - ./deploy/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3309:3306"
+
+  maven:
+    container_name: maven_builder_usabilidad
+    image: maven:3.9.4-eclipse-temurin-17
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - maven_target:/app/target
+    command: bash -c "mvn clean install -DskipTests && find /app/target -name '*.war'"
+    restart: on-failure
+
+  webapp:
+    container_name: webapp_usabilidad
+    image: tomcat:10.1.24-jdk21-temurin-jammy
+    depends_on:
+      - maven
+    volumes:
+      - maven_target:/usr/local/tomcat/webapps
+    command: bash -c "sleep 15 && cp /usr/local/tomcat/webapps/HandiDraw-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/HandiDraw.war && catalina.sh run"
+    ports:
+      - "8085:8080"
+    restart: always
+
+volumes:
+  maven_target:
