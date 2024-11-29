@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HandiDraw</title>
+  <link rel="stylesheet" href="css/menuStyle.css">
+  <link rel="stylesheet" href="css/backgroung.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div id="main-container">
+  <!-- Header -->
+  <header id="main-header">
+    <h1>HandiDraw</h1>
+  </header>
+
+  <div id="layout">
+    <!-- Sidebar Menu -->
+    <nav id="sidebar-menu">
+      <button class="menu-item" onclick="navigate('dibujoLibre')">
+        <i class="fas fa-pencil-alt"></i> Dibujo libre
+      </button>
+      <button class="menu-item" onclick="navigate('pintarPlantilla')">
+        <i class="fas fa-paint-brush"></i> Pintar plantilla
+      </button>
+      <button class="menu-item" onclick="navigate('dibujoMemoria')">
+        <i class="fas fa-brain"></i> Dibujo de memoria
+      </button>
+      <button class="menu-item" onclick="navigate('calcarDibujo')">
+        <i class="fas fa-drafting-compass"></i> Calcar un dibujo
+      </button>
+      <button class="menu-item" onclick="navigate('galeria')">
+        <i class="fas fa-images"></i> Galería
+      </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+      <div class="video-container">
+        <iframe
+                src="https://www.youtube.com/embed/COwC0F6wxbU?start_radio=1&list=RDCOwC0F6wxbU"
+                title="Video de YouTube"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+        </iframe>
+        <button class="primary-button">
+          <i class="fas fa-gamepad"></i> Jugar
+        </button>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  function navigate(section) {
+    // Aquí puedes redirigir a otras páginas o cargar contenido dinámico.
+    alert(`Navegando a la sección: ${section}`);
+  }
+
+  function startGame() {
+    alert("Iniciando el juego...");
+    // Lógica para iniciar el juego.
+  }
+</script>
+</body>
+</html>
