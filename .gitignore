@@ -8,3 +8,11 @@ target/
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+
+# Ignorar archivos de configuración de editor y otros archivos generados
+/.idea/
+.idea/shelf/
+# Ignorar archivos específicos de .idea
+.idea/compliler
+.idea/encodings.xml
+.idea/modules.xml
