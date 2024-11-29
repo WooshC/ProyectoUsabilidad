@@ -1,4 +1,4 @@
-package com.poliweb.controladores;
+package com.handiweb.controladores;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

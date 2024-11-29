@@ -1,4 +1,4 @@
-package com.poliweb.resources;
+package com.handiweb.resources;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
