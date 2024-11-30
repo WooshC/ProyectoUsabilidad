@@ -18,34 +18,35 @@
   <div id="layout">
     <!-- Sidebar Menu -->
     <nav id="sidebar-menu">
-      <button class="menu-item" onclick="navigate('dibujoLibre')">
+      <button class="menu-item" onclick="navigate('Dibujo Libre', 'https://www.youtube.com/embed/COwC0F6wxbU')">
         <i class="fas fa-pencil-alt"></i> Dibujo libre
       </button>
-      <button class="menu-item" onclick="navigate('pintarPlantilla')">
+      <button class="menu-item" onclick="navigate('Pintar Plantilla', 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
         <i class="fas fa-paint-brush"></i> Pintar plantilla
       </button>
-      <button class="menu-item" onclick="navigate('dibujoMemoria')">
+      <button class="menu-item" onclick="navigate('Dibujo de Memoria', 'https://www.youtube.com/embed/8NscdwiDP1k')">
         <i class="fas fa-brain"></i> Dibujo de memoria
       </button>
-      <button class="menu-item" onclick="navigate('calcarDibujo')">
+      <button class="menu-item" onclick="navigate('Calcar Dibujo', 'https://www.youtube.com/embed/7r6U9WeA4VY')">
         <i class="fas fa-drafting-compass"></i> Calcar un dibujo
       </button>
-      <button class="menu-item" onclick="navigate('galeria')">
+      <button class="menu-item" onclick="navigate('Galeria', 'https://www.youtube.com/embed/Xb0K5F0cPz0')">
         <i class="fas fa-images"></i> Galería
+      </button>
+      <button class="menu-item" onclick="navigate('Imita y Dibuja', 'https://www.youtube.com/embed/COwC0F6wxbU')">
+        <i class="fa-solid fa-video"></i> Imita y dibuja
       </button>
     </nav>
 
     <!-- Main Content -->
     <main id="main-content">
       <div class="video-container">
-        <iframe
-                src="https://www.youtube.com/embed/COwC0F6wxbU?start_radio=1&list=RDCOwC0F6wxbU"
-                title="Video de YouTube"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen>
-        </iframe>
+        <iframe id="video-frame" src="https://www.youtube.com/embed/COwC0F6wxbU" title="Video de YouTube" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         <button class="primary-button">
           <i class="fas fa-gamepad"></i> Jugar
+        </button>
+        <button class="secondary-button">
+          <i class="fas fa-trophy"></i> Logros
         </button>
       </div>
     </main>
@@ -53,14 +54,13 @@
 </div>
 
 <script>
-  function navigate(section) {
-    // Aquí puedes redirigir a otras páginas o cargar contenido dinámico.
+  // Función para cambiar el video en el iframe
+  function navigate(section, videoUrl) {
+    // Mostrar un mensaje con la sección
     alert(`Navegando a la sección: ${section}`);
-  }
 
-  function startGame() {
-    alert("Iniciando el juego...");
-    // Lógica para iniciar el juego.
+    // Cambiar el src del iframe con el video correspondiente
+    document.getElementById('video-frame').src = videoUrl;
   }
 </script>
 </body>

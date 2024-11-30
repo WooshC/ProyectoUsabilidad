@@ -1,0 +1,42 @@
+/* La paleta */
+.paleta {
+    position: fixed; /* Fija la paleta a la izquierda */
+    left: 0;
+    top: 50px; /* 50px de margen superior */
+    width: 200px; /* Ancho fijo de 100px */
+    background-color: #D47F3A; /* Color de fondo de la paleta */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Alinea los elementos al inicio */
+    padding: 0 10px; /* Espaciado interno */
+    overflow-y: auto; /* Permite el desplazamiento si es necesario */
+}
+
+.tool {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 10px;
+    transition: transform 0.2s, background-color 0.3s;
+    margin-bottom: 10px; /* Espacio entre los elementos */
+}
+
+.tool:hover {
+    transform: scale(1.1);
+    background-color: #f0f0f0;
+    border-radius: 1px;
+}
+
+.tool i {
+    font-size: 80px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.tool p {
+    font-size: 14px;
+    color: #000000;
+    margin: 0;
+}

@@ -1,0 +1,10 @@
+/* Estilo para el lienzo */
+.lienzo {
+    background-color: #FFF8E1; /* Color de fondo del lienzo */
+    width: 750px; /* Establecemos el ancho del lienzo en 750px */
+    height: 500px; /* Altura fija de 500px */
+    position: absolute; /* Usamos posicionamiento absoluto */
+    right: 20px; /* Separación de 20px con el margen derecho */
+    top: 50px; /* Separación de 50px del margen superior */
+    bottom: 50px; /* Separación de 50px con el margen inferior */
+}

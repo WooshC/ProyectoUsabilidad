@@ -13,7 +13,7 @@ public class InicioController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            request.getRequestDispatcher("/bienvenida.html").forward(request, response);
+            request.getRequestDispatcher("/inicio.html").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();  // Puedes registrar el error en los logs si es necesario
             request.setAttribute("errorMessage", "Lo sentimos, hubo un error inesperado. Intenta nuevamente más tarde.");

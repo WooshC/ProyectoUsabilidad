@@ -91,6 +91,27 @@
     transition: background-color 0.3s ease;
 }
 
+
+
 .primary-button:hover {
-    background-color: #FFC07A;
+    background-color: #e8970e;
+}
+
+.secondary-button {
+    position: absolute; /* Posiciona el botón de manera absoluta */
+    right: 10px; /* Alinea el botón a la derecha */
+    top: 500px;
+    padding: 10px 20px;
+    font-size: 32px;
+    background-color: #FFD49A;
+    color: #000000;
+    border: 1px solid #333333;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+.secondary-button:hover {
+    background-color: #e8970e;
 }
