@@ -1,0 +1,105 @@
+* {
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.contenedor {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-wrap: wrap;
+}
+
+.izquierda {
+    background-color: #D47F3A;
+    width: 200px;
+    padding: 10px;
+    height: 100%; /* La altura se ajusta al 100% del contenedor principal */
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    user-select: none;
+
+}
+
+.lienzo {
+    background-color: #FFF8E1; /* Color de fondo del lienzo */
+    flex-grow: 1;
+    padding: 0px;
+    margin: 0 10% 20px;
+    margin-top: 100px;
+    height: 440px; /* Ajusta la altura del lienzo */
+    border: 1px solid #000; /* Borde para el lienzo */
+    cursor: crosshair;
+}
+
+
+
+.tool {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    margin-bottom: 10px; /* Espacio entre los elementos */
+    flex-grow: 1;
+}
+
+.tool:hover {
+    transform: scale(1.1);
+    background-color: #f0f0f0;
+}
+
+.tool i {
+    font-size: 60px;
+    color: #333;
+}
+
+.tool p {
+    font-size: 14px;
+    color: #000000;
+    margin: 0;
+}
+
+.tool-select {
+    display: none; /* Ocultamos el select por defecto */
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.paleta {
+    background-color: #D47F3A; /* Color de fondo de la paleta */
+    flex-grow: 1;
+}
+
+@media (max-width: 768px) {
+    .contenedor {
+        flex-direction: row; /* Cambia a disposición vertical */
+    }
+
+    .izquierda {
+        width: 100%;
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: auto; /* Ajusta la altura del contenedor izquierdo para que sea más pequeña */
+    }
+
+    /* Ocultar los íconos y mostrar el combo box en pantallas pequeñas */
+    .tool {
+        display: none;
+    }
+
+    .tool-select {
+        display: block; /* Mostramos el select en pantallas pequeñas */
+    }
+}

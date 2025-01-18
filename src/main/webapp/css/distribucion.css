@@ -1,0 +1,6 @@
+/* Contenedor principal para dividir las dos áreas */
+.container {
+    display: flex;
+    height: 100vh; /* Ocupa todo el alto de la ventana */
+    flex-direction: row; /* Asegura que los elementos estén en fila */
+}

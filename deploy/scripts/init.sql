@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS javaweb;
-USE javaweb;
+CREATE DATABASE IF NOT EXISTS accesibilidad;
+USE accesibilidad;
 
 -- Establecer la zona horaria a Ecuador (America/Guayaquil)
 SET GLOBAL time_zone = 'America/Guayaquil';

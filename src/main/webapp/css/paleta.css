@@ -3,7 +3,7 @@
     position: fixed; /* Fija la paleta a la izquierda */
     left: 0;
     top: 50px; /* 50px de margen superior */
-    width: 200px; /* Ancho fijo de 100px */
+    width: 200px; /* Ancho fijo de 200px */
     background-color: #D47F3A; /* Color de fondo de la paleta */
     display: flex;
     flex-direction: column;
