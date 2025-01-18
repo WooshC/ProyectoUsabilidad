@@ -10,6 +10,7 @@
 </head>
 <body>
 
+
 <div class="contenedor">
     <!-- Contenedor izquierdo con las herramientas -->
     <div class="izquierda">
@@ -32,6 +33,7 @@
                 <p>Colores</p>
             </div>
 
+
             <!-- Combo box para pantallas pequeñas -->
             <select id="tool-select" class="tool-select" onchange="setTool(this.value)">
                 <option value="pencil">Lápiz</option>
@@ -40,12 +42,24 @@
                 <option value="colors">Colores</option>
             </select>
         </div>
+
     </div>
+
 
     <!-- Lienzo donde se dibuja -->
     <canvas id="lienzo" class="lienzo">
         <!-- Aquí se dibuja -->
     </canvas>
+    <div class="tool" id="download" onclick="downloadCanvas()">
+        <i class="fas fa-download"></i>
+        <p>Descargar</p>
+    </div>
+    <div class="tool" id="undoButton">
+        <i class="fas fa-undo"></i>
+        <p>Deshacer</p>
+    </div>
+
+
 </div>
 
 <script src="js/script.js"></script>
