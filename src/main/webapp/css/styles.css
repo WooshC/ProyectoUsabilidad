@@ -29,7 +29,7 @@ body, html {
 }
 
 .lienzo {
-    background-color: #FFF8E1; /* Color de fondo del lienzo */
+    background-color: #D1B27A; /* Color de fondo del lienzo */
     flex-grow: 1;
     padding: 0px;
     margin: 0 10% 20px;
@@ -37,6 +37,13 @@ body, html {
     height: 440px; /* Ajusta la altura del lienzo */
     border: 1px solid #000; /* Borde para el lienzo */
     cursor: crosshair;
+}
+
+#canvas {
+    border: 2px solid black; /* Eliminar el borde para coincidir con el lienzo */
+    width: 100%;
+    height: 100%; /* Asegura que el lienzo ocupe todo el contenedor */
+    display: block; /* Evita el espacio innecesario debajo del lienzo */
 }
 
 
@@ -103,5 +110,38 @@ body, html {
         display: block; /* Mostramos el select en pantallas pequeñas */
     }
 }
+
+/* Estilos para el cuadro emergente */
+/* Estilos para el cuadro emergente */
+.color-picker-container {
+    display: none; /* Inicialmente oculto */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    transform: translateY(10px);
+    background-color: #FFF8E1;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    text-align: center;
+    width: 200px;  /* Ancho del cuadro de colores */
+}
+
+/* Estilo para los círculos de colores */
+.color-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 5px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* Opcional: sombra cuando se pasa el mouse sobre los círculos */
+.color-box:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
 
 
