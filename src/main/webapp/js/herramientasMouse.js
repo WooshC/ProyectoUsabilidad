@@ -255,12 +255,31 @@ function downloadLienzo() {
 // Función para mostrar u ocultar el cuadro de selección de colores
 function toggleColors() {
     const colorPicker = document.getElementById('color-picker');
-    colorPicker.style.display = colorPicker.style.display === 'block' ? 'none' : 'block';
+    const colorsTool = document.getElementById('colors');
+
+    // Obtener las coordenadas de la posición del contenedor "colors" en la página
+    const rect = colorsTool.getBoundingClientRect();
+
+    // Calcular la posición de color-picker con base en las coordenadas de "colors"
+    const topPosition = rect.top + window.scrollY + (rect.height / 2) - (colorPicker.offsetHeight / 2); // Centrado vertical
+    const leftPosition = rect.right + window.scrollX; // Colocamos el color-picker a la derecha de "colors"
+
+    // Establecer la posición de color-picker
+    colorPicker.style.top = `${topPosition}px`;
+    colorPicker.style.left = `${leftPosition}px`;
+
+    // Alternar la visibilidad del color-picker
+    if (colorPicker.style.display === 'none' || colorPicker.style.display === '') {
+        colorPicker.style.display = 'block';
+    } else {
+        colorPicker.style.display = 'none';
+    }
 }
+
 
 // Función para cambiar el color
 function setColor(color) {
     colorActual = color;  // Asigna el color elegido a la variable global
-    const colorPicker = document.getElementById('color-picker');
-    colorPicker.style.display = 'none';  // Cierra el cuadro después de seleccionar un color
 }
+
+
