@@ -3,6 +3,10 @@ let herramientaActual = "pincel";
 let colorActual = "green";
 let colorLienzo = "#FFF8E1";
 
+function deshacer(){
+    lienzo.deshacerAlEstadoPrevio();
+}
+
 const HERRAMIENTAS_DISPONIBLES = [
     "lapiz",
     "pincel",
@@ -28,6 +32,22 @@ class Lienzo {
         this.ultimoY = null;
         this.buffer = createGraphics(w, h);
         this.buffer.background(colorLienzo);
+        this.historial = [];
+    }
+
+    guardarEstado(){
+        let bufferActual = createGraphics(this.w,this.h);
+        bufferActual.image(this.buffer,0,0);
+        this.historial.push(bufferActual);
+        print(`Aumento ${this.historial.length}`);
+    }
+
+    deshacerAlEstadoPrevio() {
+        if (this.historial.length <= 0) {
+            return;
+        }
+        this.buffer = this.historial.pop();
+        print(`${this.historial.length}`);
     }
 
     draw() {
@@ -38,6 +58,7 @@ class Lienzo {
     }
 
     mousePressed(mx, my) {
+        this.guardarEstado()
         this.ultimoX = mx;
         this.ultimoY = my;
         switch (herramientaActual) {
@@ -99,8 +120,8 @@ class Lienzo {
     }
 
     dibujarConSpray(x, y) {
-        let densidad = 25;
-        let radio = 10;
+        let densidad = 50;
+        let radio = 15;
         this.buffer.stroke(colorActual);
         this.buffer.strokeWeight(1);
         for (let i = 0; i < densidad; i++) {
@@ -223,11 +244,16 @@ function draw() {
 }
 
 function mousePressed() {
-    lienzo.mousePressed(mouseX, mouseY);
+
+    if (mouseX >= lienzo.x && mouseX <= lienzo.x + lienzo.w && mouseY >= lienzo.y && mouseY <= lienzo.y + lienzo.h){
+        lienzo.mousePressed(mouseX, mouseY);
+    }
 }
 
 function mouseDragged() {
-    lienzo.mouseDragged(mouseX, mouseY);
+    if (mouseX >= lienzo.x && mouseX <= lienzo.x + lienzo.w && mouseY >= lienzo.y && mouseY <= lienzo.y + lienzo.h){
+        lienzo.mouseDragged(mouseX, mouseY);
+    }
 }
 
 function mouseReleased() {
@@ -281,5 +307,28 @@ function toggleColors() {
 function setColor(color) {
     colorActual = color;  // Asigna el color elegido a la variable global
 }
+
+
+function downloadCanvas() {
+    // Crear una copia temporal del lienzo para incluir el fondo
+    const tempCanvas = document.createElement("canvas");
+    const tempCtx = tempCanvas.getContext("2d");
+
+    // Ajustar tamaño del canvas temporal
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+
+    // Dibujar el fondo y el contenido del lienzo principal en el temporal
+    tempCtx.fillStyle = "#FFF8E1"; // Color de fondo
+    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+    tempCtx.drawImage(canvas, 0, 0);
+
+    // Crear el enlace de descarga
+    const link = document.createElement("a");
+    link.download = "mi_dibujo.png";
+    link.href = tempCanvas.toDataURL("image/png");
+    link.click();
+}
+
 
 
