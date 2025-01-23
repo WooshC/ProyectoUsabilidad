@@ -2,8 +2,9 @@ let lienzo;
 let herramientaActual = "pincel";
 let colorActual = "green";
 let colorLienzo = "#FFF8E1";
+let dentroLienzo = false;
 
-function deshacer(){
+function deshacer() {
     lienzo.deshacerAlEstadoPrevio();
 }
 
@@ -35,11 +36,10 @@ class Lienzo {
         this.historial = [];
     }
 
-    guardarEstado(){
-        let bufferActual = createGraphics(this.w,this.h);
-        bufferActual.image(this.buffer,0,0);
+    guardarEstado() {
+        let bufferActual = createGraphics(this.w, this.h);
+        bufferActual.image(this.buffer, 0, 0);
         this.historial.push(bufferActual);
-        print(`Aumento ${this.historial.length}`);
     }
 
     deshacerAlEstadoPrevio() {
@@ -47,7 +47,6 @@ class Lienzo {
             return;
         }
         this.buffer = this.historial.pop();
-        print(`${this.historial.length}`);
     }
 
     draw() {
@@ -245,15 +244,16 @@ function draw() {
 
 function mousePressed() {
 
-    if (mouseX >= lienzo.x && mouseX <= lienzo.x + lienzo.w && mouseY >= lienzo.y && mouseY <= lienzo.y + lienzo.h){
+    if (mouseX >= lienzo.x && mouseX <= lienzo.x + lienzo.w && mouseY >= lienzo.y && mouseY <= lienzo.y + lienzo.h) {
+        dentroLienzo = true;
         lienzo.mousePressed(mouseX, mouseY);
+    } else {
+        dentroLienzo = false;
     }
 }
 
 function mouseDragged() {
-    if (mouseX >= lienzo.x && mouseX <= lienzo.x + lienzo.w && mouseY >= lienzo.y && mouseY <= lienzo.y + lienzo.h){
-        lienzo.mouseDragged(mouseX, mouseY);
-    }
+    if (dentroLienzo) lienzo.mouseDragged(mouseX, mouseY);
 }
 
 function mouseReleased() {
