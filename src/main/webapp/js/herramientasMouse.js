@@ -119,8 +119,8 @@ class Lienzo {
     }
 
     dibujarConSpray(x, y) {
-        let densidad = 50;
-        let radio = 15;
+        let densidad = 120;
+        let radio = 40;
         this.buffer.stroke(colorActual);
         this.buffer.strokeWeight(1);
         for (let i = 0; i < densidad; i++) {
