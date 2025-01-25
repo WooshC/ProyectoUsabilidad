@@ -2,14 +2,17 @@ import {Herramienta} from './Herramienta.js';
 
 export class Spray extends Herramienta {
 
-    constructor(color, grosor) {
+    constructor(p5, color, grosor) {
         super(color, grosor);
-        this.densidad = this.definirDensidad(grosor);
-        this.radio = this.definirRadio(grosor)
+        this.definirDensidad(grosor);
+        this.definirRadio(grosor);
+        this.p5 = p5;
     }
 
-    definirGrosor() {
-        return super(grosorSeleccionado, grosor1 = 1, grosor2 = 1, grosor3 = 1);
+    definirGrosor(grosorSeleccionado) {
+        super.definirGrosor(grosorSeleccionado, 1, 1, 1);
+        this.definirDensidad(grosorSeleccionado);
+        this.definirRadio(grosorSeleccionado);
     }
 
     definirRadio(grosor) {
@@ -18,36 +21,36 @@ export class Spray extends Herramienta {
             mediano : 30,
             grande : 40
         };
-        return radios[grosor] || 20;
+        this.radio = radios[grosor] || 20;
     }
 
     definirDensidad(grosor) {
-        const radios = {
+        const densidades = {
             pequeño : 60,
             mediano : 90,
             grande : 120
         };
-        return radios[grosor] || 60;
+        this.densidad = densidades[grosor] || 60;
     }
 
 
     iniciarTrazo(posicionX, posicionY, buffer) {
-        dibujarEfecto(posicionX,posicionY,buffer);
+        this.dibujarEfecto(posicionX,posicionY,buffer);
     }
 
     trazar(ultimoX, ultimoY, actualX, actualY, buffer) {
-        dibujarEfecto(actualX,actualY,buffer);
+        this.dibujarEfecto(actualX,actualY,buffer);
     }
 
     dibujarEfecto(x,y,buffer){
         buffer.stroke(this.colorImpregnado);
         buffer.strokeWeight(this.grosor);
         for (let i = 0; i < this.densidad; i++) {
-            let angulo = random(TWO_PI);
-            let r = random(this.radio);
-            let offsetX = r * cos(angulo);
-            let offsetY = r * sin(angulo);
-            this.buffer.point(x + offsetX, y + offsetY);
+            let angulo = this.p5.random(this.p5.TWO_PI);
+            let r = this.p5.random(this.radio);
+            let offsetX = r * this.p5.cos(angulo);
+            let offsetY = r * this.p5.sin(angulo);
+            buffer.point(x + offsetX, y + offsetY);
         }
     }
 }

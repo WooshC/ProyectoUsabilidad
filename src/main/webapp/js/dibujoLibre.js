@@ -1,74 +1,30 @@
-import {Lapiz} from './clasesdibujo/Lapiz.js'; 
-import {Pincel} from './clasesdibujo/Pincel.js'; 
-import {Borrador} from './clasesdibujo/Borrador.js'; 
-import {Spray} from './clasesdibujo/Spray.js'; 
-import {Pintura} from './clasesdibujo/Pintura.js';
-import {Lienzo} from './clasesdibujo/lienzo.js';
+import { Lapiz } from './clasesdibujo/Lapiz.js';
+import { Pincel } from './clasesdibujo/Pincel.js';
+import { Borrador } from './clasesdibujo/Borrador.js';
+import { Spray } from './clasesdibujo/Spray.js';
+import { Pintura } from './clasesdibujo/Pintura.js';
+import { Lienzo } from './clasesdibujo/lienzo.js';
 
+let p5instancia;
 let lienzo;
-let colorActual = "green";
-let herramientaActual = new Pincel(colorActual,"mediano");
+let colorActual = "black";
+let herramientaActual;
+let grosorTrazo = "pequeño";
 let colorLienzo = "#FFF8E1";
 let dentroLienzo = false;
 
-function deshacer() {
-    lienzo.deshacerAlEstadoPrevio();
-}
+function ocultarCanvas() {
+    let canvases = document.querySelectorAll('canvas');
 
-function setup() {
-    var canvasContainer = select('#canvas');
-    var canva = createCanvas(canvasContainer.width, canvasContainer.height);
-    // Posiciona el canvas en la misma ubicación del contenedor
-    canva.position(canvasContainer.position().x, canvasContainer.position().y);
-    lienzo = new Lienzo(0, 0, canva.width, canva.height, "nuevo", colorLienzo);
-    canva.parent('canvas');
-}
-
-function draw() {
-    background(colorLienzo);  // Fondo del lienzo
-    lienzo.draw();
-}
-
-function mousePressed() {
-    if (mouseX >= lienzo.x && mouseX <= lienzo.x + lienzo.w && mouseY >= lienzo.y && mouseY <= lienzo.y + lienzo.h) {
-        dentroLienzo = true;
-        lienzo.mousePressed(mouseX, mouseY);
-    } else {
-        dentroLienzo = false;
-    }
-}
-
-function mouseDragged() {
-    if (dentroLienzo) lienzo.mouseDragged(mouseX, mouseY);
-}
-
-function mouseReleased() {
-    lienzo.mouseReleased();
-}
-
-// Funciones para cambiar herramienta y color
-function setHerramienta(herramienta) {
-    if(herramienta =="lapiz") herramientaActual = new Lapiz(colorActual,"mediano");
-    if(herramienta =="borrador") herramientaActual = new Borrador(colorLienzo,"grande");
-    if(herramienta =="pincel") herramientaActual = new Pincel(colorActual,"mediano");
-    if(herramienta =="spray") herramientaActual = new Spray(colorActual,"mediano");
-    if(herramienta =="pintura") herramientaActual = new Pintura(colorActual,"mediano");
-}
-
-function setColor(color) {
-    colorActual = color;
-}
-
-function clearLienzo() {
-    lienzo.buffer.background(colorLienzo);
-}
-
-function downloadLienzo() {
-    saveCanvas(lienzo.buffer, lienzo.title, 'png');
+    canvases.forEach((canvas) => {
+        if (!canvas.closest('#defaultCanvas0')) {
+            canvas.remove();
+        }
+    });
 }
 
 // Función para mostrar u ocultar el cuadro de selección de colores
-function toggleColors() {
+export function toggleColors() {
     const colorPicker = document.getElementById('color-picker');
     const colorsTool = document.getElementById('colors');
 
@@ -91,30 +47,83 @@ function toggleColors() {
     }
 }
 
+const sketch = (p) => {
+    let lapiz;
 
-// Función para cambiar el color
-function setColor(color) {
-    colorActual = color;  // Asigna el color elegido a la variable global
+    p.preload = () => {
+        p5instancia = p;
+        herramientaActual = new Lapiz(p5instancia, colorActual, "pequeño");
+    }
+
+    p.setup = () => {
+        let canvasContainer = p.select('#canvas');
+        let canva = p.createCanvas(canvasContainer.width, canvasContainer.height);
+        canva.position(canvasContainer.position().x, canvasContainer.position().y);
+        lienzo = new Lienzo(p, 0, 0, canva.width, canva.height, "nuevo", colorLienzo);
+        canva.parent('#canvas');        
+        ocultarCanvas();
+    };
+
+    p.draw = () => {
+        p.background(colorLienzo);
+        lienzo.draw();
+    };
+
+    p.mousePressed = () => {
+        if (p.mouseX >= lienzo.x && p.mouseX <= lienzo.x + lienzo.w && p.mouseY >= lienzo.y && p.mouseY <= lienzo.y + lienzo.h) {
+            dentroLienzo = true;
+            lienzo.mousePressed(p.mouseX, p.mouseY, herramientaActual);
+        } else {
+            dentroLienzo = false;
+        }
+        ocultarCanvas();
+    }
+
+    p.mouseDragged = () => {
+        if (dentroLienzo) lienzo.mouseDragged(p.mouseX, p.mouseY, herramientaActual);
+    }
+
+    p.mouseReleased = () => {
+        lienzo.mouseReleased();
+    }
+};
+new p5(sketch);
+
+// Funciones para cambiar herramienta y color
+export function setHerramienta(herramienta) {
+    if (herramienta == "lapiz") herramientaActual = new Lapiz(p5instancia, colorActual, grosorTrazo);
+    if (herramienta == "borrador") herramientaActual = new Borrador(colorLienzo, grosorTrazo);
+    if (herramienta == "pincel") herramientaActual = new Pincel(colorActual, grosorTrazo);
+    if (herramienta == "spray") herramientaActual = new Spray(p5instancia, colorActual, grosorTrazo);
+    if (herramienta == "pintura") herramientaActual = new Pintura(p5instancia, colorActual, grosorTrazo);
 }
 
-
-function downloadCanvas() {
-    // Crear una copia temporal del lienzo para incluir el fondo
-    const tempCanvas = document.createElement("canvas");
-    const tempCtx = tempCanvas.getContext("2d");
-
-    // Ajustar tamaño del canvas temporal
-    tempCanvas.width = canvas.width;
-    tempCanvas.height = canvas.height;
-
-    // Dibujar el fondo y el contenido del lienzo principal en el temporal
-    tempCtx.fillStyle = "#FFF8E1"; // Color de fondo
-    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-    tempCtx.drawImage(canvas, 0, 0);
-
-    // Crear el enlace de descarga
-    const link = document.createElement("a");
-    link.download = lienzo.title +".png";
-    link.href = tempCanvas.toDataURL("image/png");
-    link.click();
+export function deshacer() {
+    lienzo.deshacerAlEstadoPrevio();
 }
+
+export function setColor(color) {
+    colorActual = color;
+    herramientaActual.cambiarColor(colorActual);
+}
+
+export function setGrosor(grosorSeleccionado) {
+    grosorTrazo = grosorSeleccionado;
+    herramientaActual.definirGrosor(grosorTrazo);
+}
+
+export function clearLienzo() {
+    lienzo.limpiarLienzo(colorLienzo);
+}
+
+export function downloadLienzo() {
+    p5instancia.saveCanvas(lienzo.buffer, lienzo.title, 'png');
+}
+
+window.deshacer = deshacer;
+window.setColor = setColor;
+window.setGrosor = setGrosor;
+window.clearLienzo = clearLienzo;
+window.downloadLienzo = downloadLienzo;
+window.toggleColors = toggleColors;
+window.setHerramienta = setHerramienta;

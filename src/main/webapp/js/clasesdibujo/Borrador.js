@@ -6,8 +6,8 @@ export class Borrador extends Herramienta {
         super(color, grosor);
     }
 
-    definirGrosor() {
-        return super(grosorSeleccionado, grosor1 = 4, grosor2 = 5, grosor3 = 6);
+    definirGrosor(grosorSeleccionado) {
+        super.definirGrosor(grosorSeleccionado, 10, 15, 20);
     }
 
     iniciarTrazo(posicionX, posicionY, buffer) {}
@@ -16,5 +16,9 @@ export class Borrador extends Herramienta {
         buffer.stroke(this.colorImpregnado);
         buffer.strokeWeight(this.grosor);
         buffer.line(ultimoX, ultimoY, actualX, actualY);
+    }
+
+    cambiarColor(){
+        super.cambiarColor(this.colorImpregnado);
     }
 }

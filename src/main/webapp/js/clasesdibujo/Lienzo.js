@@ -5,7 +5,8 @@ import {Spray} from './Spray.js';
 import {Pintura} from './Pintura.js'; 
 
 export class Lienzo {
-    constructor(x, y, w, h, title, colorLienzo) {
+    constructor(p,x, y, w, h, title, colorLienzo) {
+        this.p5 =p;
         this.x = x;
         this.y = y;
         this.w = w;
@@ -14,20 +15,20 @@ export class Lienzo {
         this.visible = true;
         this.ultimoX = null;
         this.ultimoY = null;
-        this.buffer = createGraphics(w, h);
+        this.buffer = this.p5.createGraphics(w, h);
         this.buffer.background(colorLienzo);
         this.historial = [];
     }
 
     draw() {
         if (!this.visible) return;
-        fill(0);
-        rect(this.x, this.y, this.w, this.h);
-        image(this.buffer, this.x, this.y);
+        this.p5.fill(0);
+        this.p5.rect(this.x, this.y, this.w, this.h);
+        this.p5.image(this.buffer, this.x, this.y);
     }
 
     guardarEstado() {
-        let bufferActual = createGraphics(this.w, this.h);
+        let bufferActual = this.p5.createGraphics(this.w, this.h);
         bufferActual.image(this.buffer, 0, 0);
         this.historial.push(bufferActual);
     }
@@ -47,7 +48,7 @@ export class Lienzo {
         herramientaActual.iniciarTrazo(mx,my,this.buffer);
     }
 
-    mouseDragged(mx, my, herramientaActual) {
+    mouseDragged(mx, my, herramientaActual) {        
         if (this.ultimoX !== null && this.ultimoY !== null) {
             herramientaActual.trazar(this.ultimoX, this.ultimoY, mx, my, this.buffer)
         }
@@ -58,5 +59,11 @@ export class Lienzo {
     mouseReleased() {
         this.ultimoX = null;
         this.ultimoY = null;
+    }
+
+    limpiarLienzo(colorLienzo){
+        this.buffer.clear();
+        this.buffer.background(colorLienzo);
+        this.historial = [];
     }
 }

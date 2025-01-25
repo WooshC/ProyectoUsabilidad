@@ -2,16 +2,17 @@ import {Herramienta} from './Herramienta.js';
 
 export class Pintura extends Herramienta {
 
-    constructor(color, grosor) {
+    constructor(p5,color, grosor) {
         super(color, grosor);
+        this.p5 = p5;
     }
 
-    definirGrosor() {
-        return super(grosorSeleccionado, grosor1 = 1, grosor2 = 1, grosor3 = 1);
+    definirGrosor(grosorSeleccionado) {
+        super.definirGrosor(grosorSeleccionado, 1, 1, 1);
     }
 
     iniciarTrazo(posicionX, posicionY, buffer) {
-        const nuevoColor = color(this.colorImpregnado);
+        const nuevoColor = this.p5.color(this.colorImpregnado);
         buffer.loadPixels();
 
         let targetColor = buffer.get(posicionX, posicionY);
@@ -60,13 +61,6 @@ export class Pintura extends Herramienta {
         }
 
         buffer.updatePixels();
-        this.reemplazarBufferConElNuevoLienzo(buffer);
-    }
-
-    reemplazarBufferConElNuevoLienzo(buffer) {
-        let nuevoBuffer = createGraphics(this.w, this.h);
-        nuevoBuffer.image(buffer, 0, 0);
-        buffer = nuevoBuffer;
     }
 
     coloresIguales(col1, col2, tolerancia = 10) {
@@ -82,7 +76,7 @@ export class Pintura extends Herramienta {
     }
 
     normalizarColor(color) {
-        if (color instanceof p5.Color) {
+        if (color instanceof this.p5.color) {
             return [
                 red(color),
                 green(color),

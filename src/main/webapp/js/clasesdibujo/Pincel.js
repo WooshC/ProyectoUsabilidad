@@ -6,8 +6,8 @@ export class Pincel extends Herramienta {
         super(color, grosor);
     }
 
-    definirGrosor() {
-        return super(grosorSeleccionado, grosor1 = 5, grosor2 = 6, grosor3 = 7);
+    definirGrosor(grosorSeleccionado) {
+        super.definirGrosor(grosorSeleccionado, 5, 8, 11);
     }
 
     iniciarTrazo(posicionX, posicionY, buffer) {
