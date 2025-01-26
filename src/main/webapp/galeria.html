@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/p5.js"></script>
+    <title>Galería de Dibujo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        .lienzo {
+            background-color: #D1B27A; /* Color de fondo del lienzo */
+            flex-grow: 1;
+            padding: 0px;
+            margin: 0 10% 20px;
+            margin-top: 100px;
+            width: 450px;
+            height: 440px; /* Ajusta la altura del lienzo */
+            border: 1px solid #000; /* Borde para el lienzo */
+            cursor: crosshair;
+        }
+        
+        #canvas {
+            border: 2px solid black; /* Eliminar el borde para coincidir con el lienzo */
+            width: 100%;
+            height: 100%; /* Asegura que el lienzo ocupe todo el contenedor */
+            display: block; /* Evita el espacio innecesario debajo del lienzo */
+        }
+        #controls {
+            margin-bottom: 10px;
+        }
+        #gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            width: 90%;
+            max-width: 800px;
+        }
+        .thumbnail {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            text-align: center;
+            background-color: white;
+        }
+        .thumbnail img {
+            width: 100%;
+            height: auto;
+        }
+        .thumbnail button {
+            margin: 5px;
+            padding: 5px 10px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Galería de Dibujo</h1>
+    <div id="controls">
+        <button onclick="saveDrawing()">Guardar</button>
+        <button onclick="loadGallery()">Cargar</button>
+        <button onclick="clearLienzo()">Limpiar</button>
+    </div>
+    <div class="lienzo">
+        <div id="canvas"></div>
+    </div>  
+    <h2>Galería</h2>
+    <div id="gallery"></div>
+
+    <script type="module" src="js/dibujoLibre.js"></script>
+</body>
+</html>

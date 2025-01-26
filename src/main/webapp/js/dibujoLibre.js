@@ -48,7 +48,6 @@ export function toggleColors() {
 }
 
 const sketch = (p) => {
-    let lapiz;
 
     p.preload = () => {
         p5instancia = p;
@@ -60,7 +59,7 @@ const sketch = (p) => {
         let canva = p.createCanvas(canvasContainer.width, canvasContainer.height);
         canva.position(canvasContainer.position().x, canvasContainer.position().y);
         lienzo = new Lienzo(p, 0, 0, canva.width, canva.height, "nuevo", colorLienzo);
-        canva.parent('#canvas');        
+        canva.parent('#canvas');
         ocultarCanvas();
     };
 
@@ -89,7 +88,6 @@ const sketch = (p) => {
 };
 new p5(sketch);
 
-// Funciones para cambiar herramienta y color
 export function setHerramienta(herramienta) {
     if (herramienta == "lapiz") herramientaActual = new Lapiz(p5instancia, colorActual, grosorTrazo);
     if (herramienta == "borrador") herramientaActual = new Borrador(colorLienzo, grosorTrazo);
@@ -120,6 +118,56 @@ export function downloadLienzo() {
     p5instancia.saveCanvas(lienzo.buffer, lienzo.title, 'png');
 }
 
+export function saveDrawing() {
+    const drawingData = lienzo.buffer.canvas.toDataURL("image/webp", 0.9);
+    const drawings = JSON.parse(localStorage.getItem("drawings")) || [];
+    drawings.push(drawingData);
+    localStorage.setItem("drawings", JSON.stringify(drawings));
+}
+
+export function loadGallery() {
+    const gallery = document.getElementById("gallery");
+    gallery.innerHTML = "";
+
+    const drawings = JSON.parse(localStorage.getItem("drawings")) || [];
+    drawings.forEach((drawing, index) => {
+        const thumbnail = document.createElement("div");
+        thumbnail.className = "thumbnail";
+
+        const img = document.createElement("img");
+        img.src = drawing;
+        img.alt = `Dibujo ${index + 1}`;
+        img.onclick = () => {
+            localStorage.setItem("selectedDrawing", JSON.stringify(drawing)); // Guardamos el dibujo seleccionado
+            window.location.href = "./index.html"; // Redirigir a la página de dibujo
+        };
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Eliminar";
+        deleteButton.onclick = () => deleteDrawing(index);
+
+        thumbnail.appendChild(img);
+        thumbnail.appendChild(deleteButton);
+        gallery.appendChild(thumbnail);
+    });
+}
+
+window.onload = function () {
+    const selectedDrawing = JSON.parse(localStorage.getItem("selectedDrawing"));
+    if (selectedDrawing) {
+        const img = p5instancia.loadImage(selectedDrawing, (img) => {
+            lienzo.buffer.image(img, 0, 0);
+        });
+    }
+    localStorage.removeItem("selectedDrawing");
+};
+
+export function deleteDrawing(index) {
+    const drawings = JSON.parse(localStorage.getItem("drawings")) || [];
+    drawings.splice(index, 1);
+    localStorage.setItem("drawings", JSON.stringify(drawings));
+}
+
 window.deshacer = deshacer;
 window.setColor = setColor;
 window.setGrosor = setGrosor;
@@ -127,3 +175,6 @@ window.clearLienzo = clearLienzo;
 window.downloadLienzo = downloadLienzo;
 window.toggleColors = toggleColors;
 window.setHerramienta = setHerramienta;
+window.saveDrawing = saveDrawing;
+window.loadGallery = loadGallery;
+window.deleteDrawing = deleteDrawing;
