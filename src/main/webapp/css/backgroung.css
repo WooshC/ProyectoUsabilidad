@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-image: url('../assests/imagenes/fondo1.png');
+    background-image: url('../assets/imagenes/fondo1.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;

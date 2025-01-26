@@ -45,7 +45,7 @@
         <a id="play-button" class="primary-button" href="index.html">
           <i class="fas fa-gamepad"></i> Jugar
         </a>
-        <button class="secondary-button">
+        <button class="secondary-button" onclick="goToLogros()">
           <i class="fas fa-trophy"></i> Logros
         </button>
       </div>
@@ -64,6 +64,10 @@
 
     // Actualizar el enlace del botón "Jugar"
     document.getElementById('play-button').href = playUrl;
+  }
+
+  function goToLogros() {
+    window.location.href = "logros.html"; // Redirige a logros.html
   }
 </script>
 </body>
