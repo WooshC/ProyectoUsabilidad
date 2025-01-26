@@ -15,18 +15,7 @@ body, html {
     flex-wrap: wrap;
 }
 
-.izquierda {
-    background-color: #D47F3A;
-    width: 200px;
-    padding: 10px;
-    height: 100%; /* La altura se ajusta al 100% del contenedor principal */
-    margin-right: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    user-select: none;
 
-}
 
 .lienzo {
     background-color: #D1B27A; /* Color de fondo del lienzo */
@@ -47,6 +36,18 @@ body, html {
 }
 
 
+.izquierda {
+    background-color: #D47F3A;
+    width: 200px;
+    padding: 10px;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    user-select: none;
+    /* No usamos height: 100% aquí para permitir crecimiento dinámico */
+    height: auto; /* Esto hace que la altura se ajuste según el contenido */
+}
 
 .tool {
     display: flex;
@@ -54,7 +55,7 @@ body, html {
     align-items: center;
     cursor: pointer;
     transition: transform 0.2s, background-color 0.3s;
-    margin-bottom: 1px; /* Espacio entre los elementos */
+    margin-bottom: 1px;
     flex-grow: 1;
 }
 
@@ -75,7 +76,7 @@ body, html {
 }
 
 .tool-select {
-    display: none; /* Ocultamos el select por defecto */
+    display: none;
     width: 100%;
     padding: 10px;
     font-size: 10px;
@@ -83,9 +84,13 @@ body, html {
 }
 
 .paleta {
-    background-color: #D47F3A; /* Color de fondo de la paleta */
-    flex-grow: 1;
+    background-color: #D47F3A;
+    flex-grow: 1; /* Se expandirá para ocupar el espacio disponible */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Asegura que los elementos dentro de .paleta se estiren */
 }
+
 
 @media (max-width: 768px) {
     .contenedor {
