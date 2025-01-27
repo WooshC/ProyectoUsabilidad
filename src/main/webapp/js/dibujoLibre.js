@@ -98,6 +98,8 @@ export function setHerramienta(herramienta) {
 
 export function deshacer() {
     lienzo.deshacerAlEstadoPrevio();
+    
+    cargarPlantilla('assets/plantillas/gato.webp',255);
 }
 
 export function setColor(color) {
@@ -166,6 +168,21 @@ export function deleteDrawing(index) {
     const drawings = JSON.parse(localStorage.getItem("drawings")) || [];
     drawings.splice(index, 1);
     localStorage.setItem("drawings", JSON.stringify(drawings));
+}
+
+function cargarPlantilla(ruta, opacidad = 100){
+    p5instancia.loadImage(ruta, (img) => {
+        lienzo.buffer.tint(255, opacidad);
+        const posX = (lienzo.buffer.width - img.width) / 2;
+        const posY = (lienzo.buffer.height - img.height) / 2;
+
+        // Dibujar la imagen en el buffer
+        lienzo.buffer.image(img, posX, posY);
+
+        lienzo.buffer.noTint();
+    }, (err) => {
+        console.error("Error cargando la plantilla:", err);
+    });
 }
 
 window.deshacer = deshacer;
