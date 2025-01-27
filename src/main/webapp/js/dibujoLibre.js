@@ -98,8 +98,6 @@ export function setHerramienta(herramienta) {
 
 export function deshacer() {
     lienzo.deshacerAlEstadoPrevio();
-    
-    cargarPlantilla('assets/plantillas/gato.webp',255);
 }
 
 export function setColor(color) {
@@ -170,7 +168,7 @@ export function deleteDrawing(index) {
     localStorage.setItem("drawings", JSON.stringify(drawings));
 }
 
-function cargarPlantilla(ruta, opacidad = 100){
+export function cargarPlantilla(ruta, opacidad = 100){
     p5instancia.loadImage(ruta, (img) => {
         lienzo.buffer.tint(255, opacidad);
         const posX = (lienzo.buffer.width - img.width) / 2;
@@ -195,3 +193,4 @@ window.setHerramienta = setHerramienta;
 window.saveDrawing = saveDrawing;
 window.loadGallery = loadGallery;
 window.deleteDrawing = deleteDrawing;
+window.cargarPlantilla = cargarPlantilla;
