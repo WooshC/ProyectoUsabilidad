@@ -160,6 +160,7 @@ window.onload = function () {
         });
     }
     localStorage.removeItem("selectedDrawing");
+    //cargarPlantilla("./assets/plantillas/pikachu.png");
 };
 
 export function deleteDrawing(index) {
