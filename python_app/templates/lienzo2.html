@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área de Dibujo con Herramientas</title>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils"></script>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header, footer {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+        }
+
+        .content-container {
+            display: flex;
+            flex: 1;
+            flex-direction: row;
+        }
+
+        .tools-list {
+            flex: 1;
+            background-color: #f4f4f4;
+            padding: 1rem;
+            border-right: 1px solid #ccc;
+        }
+
+        .tools-list ul {
+            list-style-type: none;
+        }
+
+        .tools-list li {
+            margin: 1rem 0;
+            cursor: pointer;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+
+        .tools-list li:hover {
+            background-color: #ddd;
+        }
+
+        .canvas {
+            flex: 3;
+            background-color: #e4e4e4;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ccc;
+        }
+
+        .canvas-container {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 4 / 3; /* Proporción 4:3 */
+            position: relative;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            border: 2px solid #333;
+            position: absolute;
+        }
+
+        .color-picker {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        input[type="color"] {
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Estilos responsive */
+        @media (max-width: 768px) {
+            .content-container {
+                flex-direction: column;
+            }
+
+            .tools-list {
+                border-right: none;
+                border-bottom: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Área de Dibujo</h1>
+</header>
+
+<div class="main-container">
+    <div class="content-container">
+        <div class="tools-list">
+            <h2>Herramientas</h2>
+            <ul>
+                <li id="pencil">Lápiz</li>
+                <li id="brush">Pincel</li>
+                <li id="spray">Aerosol</li>
+                <li id="eraser">Borrador</li>
+                <li id="fill">Lata de Pintura</li>
+            </ul>
+            <div class="color-picker">
+                <h3>Color</h3>
+                <input type="color" id="colorPicker" value="#000000">
+            </div>
+        </div>
+        <div class="canvas">
+            <h2>Lienzo</h2>
+            <div class="canvas-container">
+                <canvas id="drawingCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>Footer</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils"></script>
+<script>
+    const videoElement = document.createElement('video'); // Crear elemento para la cámara
+    videoElement.style.display = 'none';
+    document.body.appendChild(videoElement);
+
+    const canvas = document.getElementById('drawingCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const colorPicker = document.getElementById('colorPicker');
+    let currentTool = 'pencil'; // Herramienta inicial
+    let currentColor = '#000000';
+    let drawing = false;
+    let handData = null;
+
+    // Cambiar el tamaño del canvas dinámicamente
+    function resizeCanvas() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Configurar MediaPipe Hands
+    const hands = new Hands({
+        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
+    });
+
+    hands.setOptions({
+        maxNumHands: 1, // Detectar una sola mano
+        modelComplexity: 1,
+        minDetectionConfidence: 0.7,
+        minTrackingConfidence: 0.7,
+    });
+
+    hands.onResults((results) => {
+        if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+            handData = results.multiHandLandmarks[0]; // Guardar posición de la mano
+        } else {
+            handData = null; // No hay manos detectadas
+        }
+    });
+
+    // Conectar la cámara
+    const camera = new Camera(videoElement, {
+        onFrame: async () => {
+            await hands.send({ image: videoElement });
+        },
+        width: 640,
+        height: 480,
+    });
+    camera.start();
+
+    // Escalar coordenadas del lienzo y corregir modo espejo
+    function scaleCoordinates(x, y) {
+        return {
+            x: canvas.width * (1 - x), // Invertir el eje X
+            y: canvas.height * y
+        };
+    }
+
+    // Dibujar en el canvas basado en la posición de la mano
+    function drawFromHand() {
+        if (handData) {
+            const indexFinger = handData[8]; // Coordenadas del dedo índice
+            const scaled = scaleCoordinates(indexFinger.x, indexFinger.y);
+
+            if (drawing) {
+                ctx.lineWidth = currentTool === 'brush' ? 10 : 2;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = currentTool === 'eraser' ? '#fff' : currentColor;
+
+                ctx.lineTo(scaled.x, scaled.y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(scaled.x, scaled.y);
+            } else {
+                ctx.beginPath();
+                ctx.moveTo(scaled.x, scaled.y);
+            }
+        }
+        requestAnimationFrame(drawFromHand); // Continuar actualizando el canvas
+    }
+    drawFromHand();
+
+    // Detectar gestos para cambiar herramientas
+    function detectGesture(handData) {
+        const indexFinger = handData[8];
+        const middleFinger = handData[12];
+        const wrist = handData[0];
+
+        // Detectar un puño cerrado (dedos cerca de la muñeca)
+        if (indexFinger.y > wrist.y && middleFinger.y > wrist.y) {
+            setTool('eraser');
+        }
+
+        // Detectar dedo índice levantado
+        else if (indexFinger.y < wrist.y && middleFinger.y > wrist.y) {
+            setTool('pencil');
+        }
+
+        // Detectar aerosol (dedo índice y medio levantados)
+        else if (indexFinger.y < wrist.y && middleFinger.y < wrist.y) {
+            setTool('spray');
+        }
+    }
+
+    // Cambiar herramienta seleccionada
+    function setTool(tool) {
+        currentTool = tool;
+        console.log(`Herramienta seleccionada: ${tool}`);
+    }
+
+    // Cambiar color desde el selector
+    colorPicker.addEventListener('input', (event) => {
+        currentColor = event.target.value;
+    });
+
+    // Controlar el dibujo manualmente
+    canvas.addEventListener('mousedown', () => { drawing = true; });
+    canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
+</script>
+
+</body>
+</html>

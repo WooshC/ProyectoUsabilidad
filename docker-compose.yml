@@ -11,18 +11,15 @@ services:
       - ./deploy/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "3309:3306"
+
   python-server:
     container_name: python_usabilidad
-    image: python:3.10-slim
-    working_dir: /app
-    volumes:
-      - ./python_app:/app  # Carpeta para tus archivos Python y HTML
+    build:
+      context: ./python_app
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
+    volumes:
+      - ./python_app:/app  # Carpeta para tus archivos Python y HTML
     command: sh -c "pip install -r requirements.txt && python app.py"
     restart: always
-
-
-volumes:
-  maven_target:
-
