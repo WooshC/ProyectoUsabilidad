@@ -1,8 +1,8 @@
-import {Herramienta} from './Herramienta.js';
+import { Herramienta } from './Herramienta.js';
 
 export class Pintura extends Herramienta {
 
-    constructor(p5,color, grosor) {
+    constructor(p5, color, grosor) {
         super(color, grosor);
         this.p5 = p5;
     }
@@ -12,17 +12,35 @@ export class Pintura extends Herramienta {
     }
 
     iniciarTrazo(posicionX, posicionY, buffer) {
-        const nuevoColor = this.p5.color(this.colorImpregnado);
+        const nuevoColor = this.p5.color(this.colorImpregnado).levels;
         buffer.loadPixels();
 
-        let targetColor = buffer.get(posicionX, posicionY);
+        const pixels = buffer.pixels;
+        const width = buffer.width;
+
+        const getPixelColor = (x, y) => {
+            let idx = Math.round(4 *(y * width + x));
+            return [pixels[idx], pixels[idx + 1], pixels[idx + 2], pixels[idx + 3]];
+        };
+
+        const setPixelColor = (x, y, color) => {
+            let idx = Math.round(4 *(y * width + x));
+            pixels[idx] = color[0];
+            pixels[idx + 1] = color[1];
+            pixels[idx + 2] = color[2];
+            pixels[idx + 3] = color[3];
+        };
+
+        let targetColor = getPixelColor(posicionX, posicionY);
+
+
         let esElMismo = this.coloresIguales(targetColor, nuevoColor, 0);
         if (esElMismo) {
             return;
         }
 
         let pixelActivo = new Set();
-        let queue = [[posicionX, posicionY]];
+        let stack = [[posicionX, posicionY]];
 
         const deberiaColorearPixel = (x1, y1) => {
             if (x1 < 0 ||
@@ -33,16 +51,16 @@ export class Pintura extends Herramienta {
             let idx = y1 * buffer.width + x1;
             if (pixelActivo.has(idx)) { return false; }
 
-            let esteColor = buffer.get(x1, y1);
+            let esteColor = getPixelColor(x1, y1);
             return this.coloresIguales(esteColor, targetColor);
         };
 
-        while (queue.length > 0) {
-            let [x, y] = queue.shift();
+        while (stack.length > 0) {
+            let [x, y] = stack.pop();
             let idx = y * buffer.width + x;
 
             if (!pixelActivo.has(idx)) {
-                buffer.set(x, y, nuevoColor);
+                setPixelColor(x, y, nuevoColor);
                 pixelActivo.add(idx);
 
                 let direcciones = [
@@ -54,7 +72,7 @@ export class Pintura extends Herramienta {
 
                 for (let [xOffset, yOffset] of direcciones) {
                     if (deberiaColorearPixel(x + xOffset, y + yOffset)) {
-                        queue.push([x + xOffset, y + yOffset]);
+                        stack.push([x + xOffset, y + yOffset]);
                     }
                 }
             }
@@ -78,10 +96,10 @@ export class Pintura extends Herramienta {
     normalizarColor(color) {
         if (color instanceof this.p5.color) {
             return [
-                red(color),
-                green(color),
-                blue(color),
-                alpha(color),
+                this.p5.red(color),
+                this.p5.green(color),
+                this.p5.blue(color),
+                this.p5.alpha(color),
             ];
         } else {
             if (color.length === 3) {
@@ -91,5 +109,5 @@ export class Pintura extends Herramienta {
         }
     }
 
-    trazar(ultimoX, ultimoY, actualX, actualY, buffer) {}
+    trazar(ultimoX, ultimoY, actualX, actualY, buffer) { }
 }
