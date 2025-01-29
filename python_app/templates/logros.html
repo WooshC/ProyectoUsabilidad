@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logros</title>
+    <link rel="stylesheet" href="../estilos/backgroung.css">
+    <link rel="stylesheet" href="../estilos/estilosDeLogros/logroEstilo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <!-- Contenedor de Logro Seleccionado -->
+    <div class="selected-achievement">
+        <h3 id="selected-title">Logro seleccionado</h3> <!-- Título del logro seleccionado -->
+        <img id="selected-image" src="../assets/logros/pintorLogro.png" alt="Logro seleccionado">
+        <p id="selected-description">Selecciona un logro para verlo aquí</p>
+    </div>
+
+
+    <!-- Contenedor de los Logros -->
+    <div>
+        <h2>Logros</h2>
+        <!-- Carrusel de logros -->
+        <div class="achievement-carousel">
+            <div class="carousel-container" id="carousel-container">
+            </div>
+            <div class="carousel-buttons">
+                <button class="prev" onclick="moveCarousel(-1)">&#10094;</button>
+                <button class="next" onclick="moveCarousel(1)">&#10095;</button>
+            </div>
+        </div>
+        <div class="back-button">
+            <button class="secondary-button" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Atrás
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Datos de ejemplo de logros
+    const achievements = [
+        { id: 1, name: "Jinete Supremo", image: "../assets/logros/caballo.png", description: "¡Por ser el más rápido y hábil en 'Dibujo de memoria'!" },
+        { id: 2, name: "Campeón", image: "../assets/logros/trofeo.png", description: "Logro por ganar 10 partidas." },
+        { id: 3, name: "Explorador", image: "../assets/logros/pintorLogro.png", description: "Logro por explorar nuevas áreas." },
+        { id: 4, name: "Artista Imparable", image: "../assets/logros/dibujoLibre.png", description: "¡Por dejar volar tu creatividad sin límites en 'Dibujo libre'!" },
+        { id: 5, name: "Pincel Mágico", image: "../assets/logros/pincelMagico.png", description: "Por crear obras maestras en tiempo record 'Pintar Plantilla'." },
+        //{ id: 6, name: "Memoria Imparable", image: "../assets/logros/memoriaLogro.png", description: "¡Por dibujar de memoria como todo un experto en 'Dibujo de memoria'!" },
+        //{ id: 7, name: "Rápido y Preciso", image: "../assets/logros/rapidoPreciso.png", description: "Por recordar y dibujar a gran velocidad en 'Dibujo de memoria'." },
+        //{ id: 8, name: "El Calco Perfecto", image: "../assets/logros/calcoPerfecto.png", description: "¡Por trazar una copia perfecta del original en 'Calcar Dibujo'!" },
+        //{ id: 9, name: "Sombra Maestra", image: "../assets/logros/sombraMaestra.png", description: "Por dominar el arte del calco con precisión en 'Calcar Dibujo'." },
+        //{ id: 10, name: "Galerista Creativo", image: "../assets/logros/galerista.png", description: "¡Por llenar tu galería con obras de arte impresionantes en 'Galería'!" },
+        //{ id: 11, name: "Curador de Arte", image: "../assets/logros/curadorArte.png", description: "Por tener una galería que destaca por su calidad en 'Galería'." },
+    ];
+
+    let currentIndex = 0;
+    const achievementsPerPage = 3; // Número de logros que se muestran a la vez
+    const carouselContainer = document.getElementById('carousel-container');
+    const selectedTitle = document.getElementById("selected-title");
+
+    const selectedImage = document.getElementById("selected-image");
+    const selectedDescription = document.getElementById("selected-description");
+
+    // Función para renderizar el carrusel
+    function renderCarousel() {
+        // Limpiar el contenedor
+        carouselContainer.innerHTML = '';
+
+        // Mostrar los logros según el índice actual
+        const startIndex = currentIndex * achievementsPerPage;
+        const endIndex = startIndex + achievementsPerPage;
+        const currentAchievements = achievements.slice(startIndex, endIndex);
+
+        currentAchievements.forEach(achievement => {
+            const div = document.createElement('div');
+            div.classList.add('achievement');
+
+            div.innerHTML = `
+            <img src="${achievement.image}" alt="${achievement.name}" />
+            <h4>${achievement.name}</h4> <!-- Título del logro -->
+            <p>${achievement.description}</p> <!-- Descripción del logro -->
+        `;
+
+            // Al hacer clic en un logro, actualizamos la información del logro seleccionado
+            div.onclick = () => {
+                // Actualizar imagen, descripción y título del logro seleccionado
+                selectedImage.src = achievement.image;
+                selectedDescription.textContent = achievement.description;
+                selectedTitle.textContent = achievement.name;  // Actualizar el título
+            };
+
+            // Añadir el div del logro al contenedor del carrusel
+            carouselContainer.appendChild(div);
+        });
+    }
+
+
+    // Función para mover el carrusel
+    function moveCarousel(direction) {
+        const totalPages = Math.ceil(achievements.length / achievementsPerPage);
+        currentIndex = (currentIndex + direction + totalPages) % totalPages;
+        renderCarousel();
+    }
+
+    // Inicializar el carrusel
+    renderCarousel();
+
+    // Función de "Atrás"
+    function goBack() {
+        alert("Regresando a la pantalla anterior");
+        window.location.href = "bienvenida.html";
+    }
+</script>
+</body>
+</html>
