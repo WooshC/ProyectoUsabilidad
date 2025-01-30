@@ -186,6 +186,25 @@ export function cargarPlantilla(ruta, opacidad = 100) {
     });
 }
 
+export function toggleGrosor() {
+    const grosorOptions = document.getElementById('grosor-options');
+    const grosorTool = document.getElementById('grosor');
+
+    const rect = grosorTool.getBoundingClientRect();
+
+    const topPosition = rect.top + window.scrollY + (rect.height / 2) - (grosorOptions.offsetHeight / 2);
+    const leftPosition = rect.right + window.scrollX;
+
+    grosorOptions.style.top = `${topPosition}px`;
+    grosorOptions.style.left = `${leftPosition}px`;
+
+    if (grosorOptions.style.display === 'none' || grosorOptions.style.display === '') {
+        grosorOptions.style.display = 'block';
+    } else {
+        grosorOptions.style.display = 'none';
+    }
+}
+
 window.deshacer = deshacer;
 window.setColor = setColor;
 window.setGrosor = setGrosor;
@@ -197,3 +216,4 @@ window.saveDrawing = saveDrawing;
 window.loadGallery = loadGallery;
 window.deleteDrawing = deleteDrawing;
 window.cargarPlantilla = cargarPlantilla;
+window.toggleGrosor = toggleGrosor;

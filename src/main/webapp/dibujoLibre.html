@@ -2,67 +2,93 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="js/p5.js"></script>
-    <script src="https://unpkg.com/ml5@latest/dist/ml5.js"></script>
-    <link rel="stylesheet" href="css/backgroung.css">
-    <title>Prototipo Dibujo</title>
-    <link rel="stylesheet" href="css/dibujoLibre.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="js/p5.js"></script>
+        <script src="https://unpkg.com/ml5@latest/dist/ml5.js"></script>
+        <link rel="stylesheet" href="css/backgroung.css">
+        <title>Prototipo Dibujo</title>
+        <link rel="stylesheet" href="css/dibujoLibre.css">
 </head>
 
 <body>
-    <!-- Botón de regreso al inicio -->
-    <button class="home-button" onclick="window.location.href='paginaPrincipal.html'"><img
-            src="https://cdn-icons-png.flaticon.com/128/507/507257.png"></button>
+        <!-- Botón de regreso al inicio -->
+        <button class="home-button" onclick="window.location.href='paginaPrincipal.html'"><img
+                        src="https://cdn-icons-png.flaticon.com/128/507/507257.png"></button>
 
-    <div class="contenedor">
-        <div class="menu-lateral">
-            <button class="tool" id="pencil" onclick="setHerramienta('lapiz')" alt="Herramienta lápiz"><img
-                    src="https://cdn-icons-png.flaticon.com/128/2280/2280532.png">Lápiz</button>
-            <button class="tool" id="brush" onclick="setHerramienta('pincel')" alt="Herramienta pincel"><img
-                    src="https://cdn-icons-png.flaticon.com/128/595/595743.png">Pincel</button>
-            <button class="tool" id="spray" onclick="setHerramienta('spray')" alt="Herramienta spray"><img
-                    src="https://cdn-icons-png.flaticon.com/128/4229/4229008.png">Spray</button>
-            <button class="tool" id="fill" onclick="setHerramienta('pintura')" alt="Herramienta pintura"><img
-                    src="https://cdn-icons-png.flaticon.com/128/1676/1676699.png">Relleno</button>
-            <button class="tool" id="eraser" onclick="setHerramienta('borrador')" alt="Herramienta borrador"><img
-                    src="https://cdn-icons-png.flaticon.com/128/776/776194.png">Borrador</button>
-            <button class="tool" id="colors" onclick="toggleColors()" alt="Seleccionar color">
-                <span id="colorCircle" class="color-circle"></span>
-                <span id="colorText">Color</span>
-            </button>
-            <div id="color-picker" class="color-picker-container">
-                <div class="color-box" style="background-color: black;" onclick="setColor('black')"></div>
-                <div class="color-box" style="background-color: gray;" onclick="setColor('gray')"></div>
-                <div class="color-box" style="background-color: maroon;" onclick="setColor('maroon')"></div>
-                <div class="color-box" style="background-color: blue;" onclick="setColor('blue')"></div>
-                <div class="color-box" style="background-color: green;" onclick="setColor('green')"></div>
-                <div class="color-box" style="background-color: yellow;" onclick="setColor('yellow')"></div>
-                <div class="color-box" style="background-color: red;" onclick="setColor('red')"></div>
-                <div class="color-box" style="background-color: orange;" onclick="setColor('orange')"></div>
-                <div class="color-box" style="background-color: purple;" onclick="setColor('purple')"></div>
-                <div class="color-box" style="background-color: pink;" onclick="setColor('pink')"></div>
-                <div class="color-box" style="background-color: white;" onclick="setColor('white')"></div>
-            </div>
+        <div class="contenedor">
+                <div class="menu-lateral">
+                        <button class="tool" id="grosor" onclick="toggleGrosor()" alt="Seleccionar grosor">
+                                <img src="https://cdn-icons-png.flaticon.com/128/815/815492.png"
+                                        alt="Icono Grosor">Grosor
+                        </button>
+
+                        <div id="grosor-options" class="grosor-options">
+                                <button class="grosor-option">
+                                        <div class="grosor-small"></div>
+                                </button>
+                                <button class="grosor-option">
+                                        <div class="grosor-medium"></div>
+                                </button>
+                                <button class="grosor-option">
+                                        <div class="grosor-large"></div>
+                                </button>
+                        </div>
+
+                        <button class="tool" id="pencil" onclick="setHerramienta('lapiz')" alt="Herramienta lápiz"><img
+                                        src="https://cdn-icons-png.flaticon.com/128/2280/2280532.png">Lápiz</button>
+                        <button class="tool" id="brush" onclick="setHerramienta('pincel')" alt="Herramienta pincel"><img
+                                        src="https://cdn-icons-png.flaticon.com/128/595/595743.png">Pincel</button>
+                        <button class="tool" id="spray" onclick="setHerramienta('spray')" alt="Herramienta spray"><img
+                                        src="https://cdn-icons-png.flaticon.com/128/4229/4229008.png">Spray</button>
+                        <button class="tool" id="fill" onclick="setHerramienta('pintura')"
+                                alt="Herramienta pintura"><img
+                                        src="https://cdn-icons-png.flaticon.com/128/1676/1676699.png">Relleno</button>
+                        <button class="tool" id="eraser" onclick="setHerramienta('borrador')"
+                                alt="Herramienta borrador"><img
+                                        src="https://cdn-icons-png.flaticon.com/128/776/776194.png">Borrador</button>
+                        <button class="tool" id="colors" onclick="toggleColors()" alt="Seleccionar color">
+                                <span id="colorCircle" class="color-circle"></span>
+                                <span id="colorText">Color</span>
+                        </button>
+                        <div id="color-picker" class="color-picker-container">
+                                <div class="color-box" style="background-color: black;" onclick="setColor('black')">
+                                </div>
+                                <div class="color-box" style="background-color: gray;" onclick="setColor('gray')"></div>
+                                <div class="color-box" style="background-color: maroon;" onclick="setColor('maroon')">
+                                </div>
+                                <div class="color-box" style="background-color: blue;" onclick="setColor('blue')"></div>
+                                <div class="color-box" style="background-color: green;" onclick="setColor('green')">
+                                </div>
+                                <div class="color-box" style="background-color: yellow;" onclick="setColor('yellow')">
+                                </div>
+                                <div class="color-box" style="background-color: red;" onclick="setColor('red')"></div>
+                                <div class="color-box" style="background-color: orange;" onclick="setColor('orange')">
+                                </div>
+                                <div class="color-box" style="background-color: purple;" onclick="setColor('purple')">
+                                </div>
+                                <div class="color-box" style="background-color: pink;" onclick="setColor('pink')"></div>
+                                <div class="color-box" style="background-color: white;" onclick="setColor('white')">
+                                </div>
+                        </div>
+                </div>
+
+                <div class="lienzo">
+                        <div id="canvas"></div>
+                </div>
+
+                <div class="top-buttons">
+                        <button class="tool" id="undoButton" onclick="deshacer()" alt="Deshacer acción"><img
+                                        src="https://cdn-icons-png.flaticon.com/128/10731/10731941.png">Deshacer</button>
+                        <button class="tool" id="download" onclick="downloadLienzo()" alt="Descargar lienzo"><img
+                                        src="https://cdn-icons-png.flaticon.com/128/907/907027.png">Descargar</button>
+                        <button class="action-btn" id="help" alt="Ayuda"><img
+                                        src="https://cdn-icons-png.flaticon.com/128/189/189665.png"></button>
+                </div>
         </div>
 
-        <div class="lienzo">
-            <div id="canvas"></div>
-        </div>
 
-        <div class="top-buttons">
-            <button class="tool" id="undoButton" onclick="deshacer()" alt="Deshacer acción"><img
-                    src="https://cdn-icons-png.flaticon.com/128/10731/10731941.png">Deshacer</button>
-            <button class="tool" id="download" onclick="downloadLienzo()" alt="Descargar lienzo"><img
-                    src="https://cdn-icons-png.flaticon.com/128/907/907027.png">Descargar</button>
-            <button class="action-btn" id="help" alt="Ayuda"><img
-                    src="https://cdn-icons-png.flaticon.com/128/189/189665.png"></button>
-        </div>
-    </div>
-
-
-    <script type="module" src="js/dibujoLibre.js"></script>
+        <script type="module" src="js/dibujoLibre.js"></script>
 
 </body>
 
