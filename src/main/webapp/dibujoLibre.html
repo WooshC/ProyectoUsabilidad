@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="js/p5.js"></script>
         <script src="https://unpkg.com/ml5@latest/dist/ml5.js"></script>
+        <link rel="stylesheet" href="css/modal.css">
         <link rel="stylesheet" href="css/backgroung.css">
         <title>Prototipo Dibujo</title>
         <link rel="stylesheet" href="css/dibujoLibre.css">
@@ -18,21 +19,19 @@
 
         <div class="contenedor">
                 <div class="menu-lateral">
+                        <button class="tool" id="boton deshacer" onclick="deshacer()"
+                                alt="opción deshacer última acción">
+                                <img src="https://cdn-icons-png.flaticon.com/128/18149/18149393.png">Deshacer
+                        </button>
                         <button class="tool" id="grosor" onclick="toggleGrosor()" alt="Seleccionar grosor">
                                 <img src="https://cdn-icons-png.flaticon.com/128/815/815492.png"
                                         alt="Icono Grosor">Grosor
                         </button>
 
-                        <div id="grosor-options" class="grosor-options">
-                                <button class="grosor-option">
-                                        <div class="grosor-small"></div>
-                                </button>
-                                <button class="grosor-option">
-                                        <div class="grosor-medium"></div>
-                                </button>
-                                <button class="grosor-option">
-                                        <div class="grosor-large"></div>
-                                </button>
+                        <div id="grosor-options" class="grosor-options-container">
+                                <div class="grosor-box grosor-small" onclick="setGrosor('pequeño')"></div>
+                                <div class="grosor-box grosor-medium" onclick="setGrosor('mediano')"></div>
+                                <div class="grosor-box grosor-large" onclick="setGrosor('grande')"></div>
                         </div>
 
                         <button class="tool" id="pencil" onclick="setHerramienta('lapiz')" alt="Herramienta lápiz"><img
@@ -78,18 +77,35 @@
                 </div>
 
                 <div class="top-buttons">
-                        <button class="tool" id="undoButton" onclick="deshacer()" alt="Deshacer acción"><img
-                                        src="https://cdn-icons-png.flaticon.com/128/10731/10731941.png">Deshacer</button>
-                        <button class="tool" id="download" onclick="downloadLienzo()" alt="Descargar lienzo"><img
-                                        src="https://cdn-icons-png.flaticon.com/128/907/907027.png">Descargar</button>
+                        <button class="tool" id="clearButton" onclick="clearLienzo()" alt="limpiar lienzo"><img
+                                        src="https://cdn-icons-png.flaticon.com/128/10731/10731941.png">Reiniciar</button>
+                        <button class="tool" id="saveButton" onclick="saveDrawingWithConfirmation()"
+                                alt="guardar lienzo en la galería"><img
+                                        src="https://cdn-icons-png.flaticon.com/128/907/907027.png">Guardar</button>
+                        <button class="tool" id="download" onclick="downloadDrawingWithConfirmation()" alt="Descargar lienzo"><img
+                                        src="https://cdn-icons-png.flaticon.com/128/892/892634.png">Descargar</button>
                         <button class="action-btn" id="help" alt="Ayuda"><img
                                         src="https://cdn-icons-png.flaticon.com/128/189/189665.png"></button>
                 </div>
         </div>
 
+        <!-- Modal -->
+        <div id="actionModal" class="modal">
+                <div class="modal-content">
+                        <h2 id="modalTitle">¿Estás seguro?</h2>
+                        <p id="modalMessage">¿Deseas realizar esta acción?</p>
+                        <div class="modal-actions">
+                                <button id="confirmButton" class="modal-button">Aceptar</button>
+                                <button id="cancelButton" class="modal-button">Cancelar</button>
+                        </div>
+                </div>
+        </div>
+        <!-- Contenedor para el mensaje de éxito -->
+        <div id="successMessage" class="success-message">
+                <p id="successText">¡Operación realizada con éxito!</p>
+        </div>
 
         <script type="module" src="js/dibujoLibre.js"></script>
-
 </body>
 
 </html>

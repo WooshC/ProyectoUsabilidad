@@ -13,6 +13,7 @@ let grosorTrazo = "pequeño";
 let colorLienzo = "#FFF8E1";
 let dentroLienzo = false;
 
+//FUNCIONES QUE CREAN O MODIFICAN ELEMENTOS DIRECTAMENTE EN EL ARBOL DE ELEMENTOS HTML
 function ocultarCanvas() {
     let canvases = document.querySelectorAll('canvas');
 
@@ -22,8 +23,6 @@ function ocultarCanvas() {
         }
     });
 }
-
-// Función para mostrar u ocultar el cuadro de selección de colores
 export function toggleColors() {
     const colorPicker = document.getElementById('color-picker');
     const colorsTool = document.getElementById('colors');
@@ -46,7 +45,30 @@ export function toggleColors() {
         colorPicker.style.display = 'none';
     }
 }
+export function toggleGrosor() {
+    const grosorPicker = document.getElementById('grosor-options');
+    const grosorTool = document.getElementById('grosor');
 
+    // Obtener la posición del botón "grosor"
+    const rect = grosorTool.getBoundingClientRect();
+
+    // Calcular la posición del menú de grosor
+    const topPosition = rect.top + window.scrollY + (rect.height / 2) - (grosorPicker.offsetHeight / 2);
+    const leftPosition = rect.right + window.scrollX;
+
+    // Establecer la posición del menú de grosor
+    grosorPicker.style.top = `${topPosition}px`;
+    grosorPicker.style.left = `${leftPosition}px`;
+
+    // Alternar visibilidad
+    if (grosorPicker.style.display === 'none' || grosorPicker.style.display === '') {
+        grosorPicker.style.display = 'block';
+    } else {
+        grosorPicker.style.display = 'none';
+    }
+}
+
+//FUNCIÓN PARA INICIALIZAR DIBUJO CON P5JS
 const sketch = (p) => {
 
     p.preload = () => {
@@ -88,6 +110,7 @@ const sketch = (p) => {
 };
 new p5(sketch);
 
+//FUNCIONES PARA CAMBIAR VARIABLES DE ACUERDO A LA SELECCIÓN DEL USUARIO
 export function setHerramienta(herramienta) {
     if (herramienta == "lapiz") herramientaActual = new Lapiz(p5instancia, colorActual, grosorTrazo);
     if (herramienta == "borrador") herramientaActual = new Borrador(colorLienzo, grosorTrazo);
@@ -95,80 +118,60 @@ export function setHerramienta(herramienta) {
     if (herramienta == "spray") herramientaActual = new Spray(p5instancia, colorActual, grosorTrazo);
     if (herramienta == "pintura") herramientaActual = new Pintura(p5instancia, colorActual, grosorTrazo);
 }
-
-export function deshacer() {
-    lienzo.deshacerAlEstadoPrevio();
-}
-
 export function setColor(color) {
     colorActual = color;
     herramientaActual.cambiarColor(colorActual);
     let colorCircle = document.getElementById('colorCircle');
     colorCircle.style.backgroundColor = color;
 }
-
 export function setGrosor(grosorSeleccionado) {
     grosorTrazo = grosorSeleccionado;
     herramientaActual.definirGrosor(grosorTrazo);
 }
 
+//FUNCIÓN AUXILIAR PARA ENVIAR UN MENSAJE EXITOSO
+function showSuccessMessage(message) {
+    const successMessageElement = document.getElementById('successMessage');
+    const successTextElement = document.getElementById('successText');
+    // Cambiar el mensaje del texto
+    successTextElement.textContent = message;
+    // Mostrar el mensaje
+    successMessageElement.classList.add('show');
+    // Ocultar el mensaje después de 3 segundos
+    setTimeout(() => {
+        successMessageElement.classList.remove('show');
+    }, 3000);
+}
+
+// Función para mostrar el modal con opciones
+function showDialog(title, message, confirmCallback, cancelCallback) {
+    const modal = document.getElementById('actionModal');
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalMessage').textContent = message;
+
+    // Mostrar el modal
+    modal.style.display = 'block';
+
+    const confirmButton = document.getElementById('confirmButton');
+    const cancelButton = document.getElementById('cancelButton');
+
+    confirmButton.onclick = () => {
+        confirmCallback();
+        modal.style.display = 'none'; // Cerrar el modal
+    };
+
+    cancelButton.onclick = () => {
+        if (cancelCallback) cancelCallback();
+        modal.style.display = 'none'; // Cerrar el modal
+    };
+}
+//FUNCIONES QUE REALIZAN ACCIONES SIN CONFIRMACIÓN
+export function deshacer() {
+    lienzo.deshacerAlEstadoPrevio();
+}
+
 export function clearLienzo() {
     lienzo.limpiarLienzo(colorLienzo);
-}
-
-export function downloadLienzo() {
-    p5instancia.saveCanvas(lienzo.buffer, lienzo.title, 'png');
-}
-
-export function saveDrawing() {
-    const drawingData = lienzo.buffer.canvas.toDataURL("image/webp", 0.9);
-    const drawings = JSON.parse(localStorage.getItem("drawings")) || [];
-    drawings.push(drawingData);
-    localStorage.setItem("drawings", JSON.stringify(drawings));
-}
-
-export function loadGallery() {
-    const gallery = document.getElementById("gallery");
-    gallery.innerHTML = "";
-
-    const drawings = JSON.parse(localStorage.getItem("drawings")) || [];
-    drawings.forEach((drawing, index) => {
-        const thumbnail = document.createElement("div");
-        thumbnail.className = "thumbnail";
-
-        const img = document.createElement("img");
-        img.src = drawing;
-        img.alt = `Dibujo ${index + 1}`;
-        img.onclick = () => {
-            localStorage.setItem("selectedDrawing", JSON.stringify(drawing)); // Guardamos el dibujo seleccionado
-            window.location.href = "./index.html"; // Redirigir a la página de dibujo
-        };
-
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Eliminar";
-        deleteButton.onclick = () => deleteDrawing(index);
-
-        thumbnail.appendChild(img);
-        thumbnail.appendChild(deleteButton);
-        gallery.appendChild(thumbnail);
-    });
-}
-
-window.onload = function () {
-    const selectedDrawing = JSON.parse(localStorage.getItem("selectedDrawing"));
-    if (selectedDrawing) {
-        const img = p5instancia.loadImage(selectedDrawing, (img) => {
-            lienzo.buffer.image(img, 0, 0);
-        });
-    }
-    localStorage.removeItem("selectedDrawing");
-    //cargarPlantilla("./assets/plantillas/pikachu.png");
-};
-
-export function deleteDrawing(index) {
-    const drawings = JSON.parse(localStorage.getItem("drawings")) || [];
-    drawings.splice(index, 1);
-    localStorage.setItem("drawings", JSON.stringify(drawings));
 }
 
 export function cargarPlantilla(ruta, opacidad = 100) {
@@ -186,34 +189,103 @@ export function cargarPlantilla(ruta, opacidad = 100) {
     });
 }
 
-export function toggleGrosor() {
-    const grosorOptions = document.getElementById('grosor-options');
-    const grosorTool = document.getElementById('grosor');
+//FUNCIONES CON MENSAJE EXITOSO AL EJECUTARSE
+function downloadLienzo() {
+    p5instancia.saveCanvas(lienzo.buffer, lienzo.title, 'png');
+    showSuccessMessage("¡Dibujo descargado con éxito!");
+}
 
-    const rect = grosorTool.getBoundingClientRect();
+function saveDrawing() {
+    const drawingData = lienzo.buffer.canvas.toDataURL("image/webp", 0.9);
+    const drawings = JSON.parse(localStorage.getItem("drawings")) || [];
+    drawings.push(drawingData);
+    localStorage.setItem("drawings", JSON.stringify(drawings));
+    showSuccessMessage("¡Dibujo guardado con éxito!");
+}
 
-    const topPosition = rect.top + window.scrollY + (rect.height / 2) - (grosorOptions.offsetHeight / 2);
-    const leftPosition = rect.right + window.scrollX;
-
-    grosorOptions.style.top = `${topPosition}px`;
-    grosorOptions.style.left = `${leftPosition}px`;
-
-    if (grosorOptions.style.display === 'none' || grosorOptions.style.display === '') {
-        grosorOptions.style.display = 'block';
-    } else {
-        grosorOptions.style.display = 'none';
+window.onload = function () {   //cargar dibujo
+    const selectedDrawing = JSON.parse(localStorage.getItem("selectedDrawing"));
+    if (selectedDrawing) {
+        const img = p5instancia.loadImage(selectedDrawing, (img) => {
+            lienzo.buffer.image(img, 0, 0);
+        });
+        showSuccessMessage("¡Dibujo cargado con éxito!");
     }
+    localStorage.removeItem("selectedDrawing");
+};
+
+function deleteDrawing(index) {
+    const drawings = JSON.parse(localStorage.getItem("drawings")) || [];
+    drawings.splice(index, 1);
+    localStorage.setItem("drawings", JSON.stringify(drawings));
+    showSuccessMessage("¡Dibujo Borrado con éxito!");
+}
+
+//FUNCIONES QUE REQUIEREN CONFIRMACIÓN
+//Guardar
+export function saveDrawingWithConfirmation() {
+    showDialog(
+        "Guardar Dibujo",
+        "¿Estás seguro de que quieres guardar este dibujo?",
+        saveDrawing, // Acción si acepta
+        () => {} // Acción si rechaza
+    );
+}
+//Borrar
+export function deleteDrawingWithConfirmation() {
+    showDialog(
+        "Eliminar Dibujo",
+        "¿Estás seguro de que quieres eliminar este dibujo?",
+        deleteDrawing, // Acción si acepta
+        () => {} // Acción si rechaza
+    );
+}
+//Descargar
+export function downloadDrawingWithConfirmation() {
+    showDialog(
+        "Descargar Dibujo",
+        "¿Estás seguro de que quieres descargar este dibujo?",
+        downloadLienzo, // Acción si acepta
+        () => {} // Acción si rechaza
+    );
+}
+
+export function loadGallery() {
+    const gallery = document.getElementById("gallery");
+    gallery.innerHTML = "";
+
+    const drawings = JSON.parse(localStorage.getItem("drawings")) || [];
+    drawings.forEach((drawing, index) => {
+        const thumbnail = document.createElement("div");
+        thumbnail.className = "thumbnail";
+
+        const img = document.createElement("img");
+        img.src = drawing;
+        img.alt = `Dibujo ${index + 1}`;
+        img.onclick = () => {
+            localStorage.setItem("selectedDrawing", JSON.stringify(drawing)); // Guardamos el dibujo seleccionado
+            window.location.href = "./dibujoLibre.html"; // Redirigir a la página de dibujo
+        };
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Eliminar";
+        deleteButton.onclick = () => deleteDrawing(index);
+
+        thumbnail.appendChild(img);
+        thumbnail.appendChild(deleteButton);
+        gallery.appendChild(thumbnail);
+    });
 }
 
 window.deshacer = deshacer;
 window.setColor = setColor;
 window.setGrosor = setGrosor;
 window.clearLienzo = clearLienzo;
-window.downloadLienzo = downloadLienzo;
 window.toggleColors = toggleColors;
 window.setHerramienta = setHerramienta;
-window.saveDrawing = saveDrawing;
 window.loadGallery = loadGallery;
-window.deleteDrawing = deleteDrawing;
 window.cargarPlantilla = cargarPlantilla;
 window.toggleGrosor = toggleGrosor;
+window.saveDrawingWithConfirmation = saveDrawingWithConfirmation;
+window.deleteDrawingWithConfirmation = deleteDrawingWithConfirmation;
+window.downloadDrawingWithConfirmation = downloadDrawingWithConfirmation;
