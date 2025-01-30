@@ -1,0 +1,128 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+.main-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.content-container {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+}
+
+.formulario {
+    flex: 3;
+    background-color: #ffb878; /* Color vibrante */
+    padding: 2rem; /* Más espacio */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.formulario form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+}
+
+.formulario label {
+    font-size: 1.2rem; /* Tamaño de fuente más grande */
+    color: #333; /* Color oscuro para mejor contraste */
+    margin-bottom: 0.5rem;
+}
+
+.formulario input {
+    padding: 0.8rem; /* Más espacio interno */
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 10px; /* Bordes redondeados */
+    margin-bottom: 1rem;
+    transition: border-color 0.3s ease; /* Transición suave */
+}
+
+.formulario input:focus {
+    border-color: #ff6f61; /* Color llamativo al enfocar */
+    outline: none; /* Eliminar el borde predeterminado */
+}
+
+.formulario button {
+    background-color: #ff6f61; /* Color llamativo */
+    color: white;
+    border: none;
+    padding: 1rem; /* Más espacio interno */
+    font-size: 1.2rem;
+    border-radius: 10px; /* Bordes redondeados */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Transición suave */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.formulario button:hover {
+    background-color: #ff4a3a; /* Color más oscuro al pasar el mouse */
+}
+
+@media (max-width: 768px) {
+    .content-container {
+        flex-direction: column;
+    }
+
+    .formulario {
+        padding: 1rem; /* Menos espacio en móviles */
+    }
+}
+
+#imagenRecibida {
+    max-width: 100%;
+    height: auto;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+header, footer {
+    padding: 2rem;
+    background-color: #ffb878;
+}
+
+.secondary-button {
+    right: 10px; 
+    top: 50%; 
+    padding: 15px 30px; 
+    font-size: 40px; 
+    background-color: #FFD49A;
+    color: #000000;
+    border: 2px solid #333333; 
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.secondary-button:hover {
+    background-color: #e8970e;
+}
+

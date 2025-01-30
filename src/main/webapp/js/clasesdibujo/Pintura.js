@@ -12,6 +12,7 @@ export class Pintura extends Herramienta {
     }
 
     iniciarTrazo(posicionX, posicionY, buffer) {
+
         posicionX = Math.floor(posicionX);
         posicionY = Math.floor(posicionY);
 
@@ -22,12 +23,16 @@ export class Pintura extends Herramienta {
         const width = buffer.width;
 
         const getPixelColor = (x, y) => {
+
             let idx = 4 *(y * width + x);
+
             return [pixels[idx], pixels[idx + 1], pixels[idx + 2], pixels[idx + 3]];
         };
 
         const setPixelColor = (x, y, color) => {
+
             let idx = 4 *(y * width + x);
+
             pixels[idx] = color[0];
             pixels[idx + 1] = color[1];
             pixels[idx + 2] = color[2];

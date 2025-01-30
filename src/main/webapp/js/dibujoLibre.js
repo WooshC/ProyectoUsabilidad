@@ -1,8 +1,8 @@
+import { Borrador } from './clasesdibujo/Borrador.js';
 import { Lapiz } from './clasesdibujo/Lapiz.js';
 import { Pincel } from './clasesdibujo/Pincel.js';
-import { Borrador } from './clasesdibujo/Borrador.js';
-import { Spray } from './clasesdibujo/Spray.js';
 import { Pintura } from './clasesdibujo/Pintura.js';
+import { Spray } from './clasesdibujo/Spray.js';
 import { Lienzo } from './clasesdibujo/lienzo.js';
 
 let p5instancia;

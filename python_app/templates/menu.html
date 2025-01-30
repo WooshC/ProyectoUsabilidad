@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HandiDraw</title>
+  <link rel="stylesheet" href="../estilos/menuStyle.css">
+  <link rel="stylesheet" href="../estilos/backgroung.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div id="main-container">
+  <!-- Header -->
+  <header id="main-header">
+    <h1>HandiDraw</h1>
+  </header>
+
+  <div id="layout">
+    <!-- Sidebar Menu -->
+    <nav id="sidebar-menu">
+      <button class="menu-item" onclick="navigate('Dibujo Libre', 'https://www.youtube.com/embed/COwC0F6wxbU', 'lienzo2.html')">
+        <i class="fas fa-pencil-alt"></i> Dibujo libre
+      </button>
+      <button class="menu-item" onclick="navigate('Pintar Plantilla', 'https://www.youtube.com/embed/dQw4w9WgXcQ', 'plantilla.html')">
+        <i class="fas fa-paint-brush"></i> Pintar plantilla
+      </button>
+      <button class="menu-item" onclick="navigate('Dibujo de Memoria', 'https://www.youtube.com/embed/8NscdwiDP1k', 'memoria.html')">
+        <i class="fas fa-brain"></i> Dibujo de memoria
+      </button>
+      <button class="menu-item" onclick="navigate('Calcar Dibujo', 'https://www.youtube.com/embed/7r6U9WeA4VY', 'calcar.html')">
+        <i class="fas fa-drafting-compass"></i> Calcar un dibujo
+      </button>
+      <button class="menu-item" onclick="navigate('Galeria', 'https://www.youtube.com/embed/Xb0K5F0cPz0', 'galeria.html')">
+        <i class="fas fa-images"></i> Galería
+      </button>
+      <button class="menu-item" onclick="navigate('Imita y Dibuja', 'https://www.youtube.com/embed/COwC0F6wxbU', 'imita.html')">
+        <i class="fa-solid fa-video"></i> Imita y dibuja
+      </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+      <div class="video-container">
+        <iframe id="video-frame" src="https://www.youtube.com/embed/COwC0F6wxbU" title="Video de YouTube" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <a id="play-button" class="primary-button" href="index.html">
+          <i class="fas fa-gamepad"></i> Jugar
+        </a>
+        <button class="secondary-button" onclick="goToLogros()">
+          <i class="fas fa-trophy"></i> Logros
+        </button>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  // Función para cambiar el video en el iframe y actualizar el enlace del botón "Jugar"
+  function navigate(section, videoUrl, playUrl) {
+    // Mostrar un mensaje con la sección
+    alert(`Navegando a la sección: ${section}`);
+
+    // Cambiar el src del iframe con el video correspondiente
+    document.getElementById('video-frame').src = videoUrl;
+
+    // Actualizar el enlace del botón "Jugar"
+    document.getElementById('play-button').href = playUrl;
+  }
+
+  function goToLogros() {
+    window.location.href = "logros.html"; // Redirige a logros.html
+  }
+</script>
+</body>
+</html>

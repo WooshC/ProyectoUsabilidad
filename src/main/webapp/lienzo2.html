@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área de Dibujo con Herramientas</title>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header, footer {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+        }
+
+        .content-container {
+            display: flex;
+            flex: 1;
+            flex-direction: row;
+        }
+
+        .tools-list {
+            flex: 1;
+            background-color: #f4f4f4;
+            padding: 1rem;
+            border-right: 1px solid #ccc;
+        }
+
+        .tools-list ul {
+            list-style-type: none;
+        }
+
+        .tools-list li {
+            margin: 1rem 0;
+            cursor: pointer;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+
+        .tools-list li:hover {
+            background-color: #ddd;
+        }
+
+        .canvas {
+            flex: 3;
+            background-color: #e4e4e4;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ccc;
+        }
+
+        .canvas-container {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 4 / 3; /* Proporción 4:3 */
+            position: relative;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            border: 2px solid #333;
+            position: absolute;
+        }
+
+        .color-picker {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        input[type="color"] {
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Estilos responsive */
+        @media (max-width: 768px) {
+            .content-container {
+                flex-direction: column;
+            }
+
+            .tools-list {
+                border-right: none;
+                border-bottom: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Área de Dibujo</h1>
+</header>
+
+<div class="main-container">
+    <div class="content-container">
+        <div class="tools-list">
+            <h2>Herramientas</h2>
+            <ul>
+                <li id="pencil">Lápiz</li>
+                <li id="brush">Pincel</li>
+                <li id="spray">Aerosol</li>
+                <li id="eraser">Borrador</li>
+                <li id="fill">Lata de Pintura</li>
+            </ul>
+            <div class="color-picker">
+                <h3>Color</h3>
+                <input type="color" id="colorPicker" value="#000000">
+            </div>
+        </div>
+        <div class="canvas">
+            <h2>Lienzo</h2>
+            <div class="canvas-container">
+                <canvas id="drawingCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>Footer</p>
+</footer>
+
+<script>
+    const canvas = document.getElementById('drawingCanvas');
+    const ctx = canvas.getContext('2d');
+    const colorPicker = document.getElementById('colorPicker');
+
+    let currentTool = 'pencil'; // Herramienta inicial
+    let drawing = false;
+    let currentColor = '#000000';
+
+    // Configurar tamaño del canvas
+    function resizeCanvas() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Eventos de herramientas
+    document.getElementById('pencil').addEventListener('click', () => setTool('pencil'));
+    document.getElementById('brush').addEventListener('click', () => setTool('brush'));
+    document.getElementById('spray').addEventListener('click', () => setTool('spray'));
+    document.getElementById('eraser').addEventListener('click', () => setTool('eraser'));
+    document.getElementById('fill').addEventListener('click', () => setTool('fill'));
+
+    function setTool(tool) {
+        currentTool = tool;
+    }
+
+    // Cambiar color
+    colorPicker.addEventListener('input', (event) => {
+        currentColor = event.target.value;
+    });
+
+    // Dibujo
+    canvas.addEventListener('mousedown', () => { drawing = true; });
+    canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
+    canvas.addEventListener('mousemove', draw);
+
+    function draw(event) {
+        if (!drawing) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        ctx.lineWidth = currentTool === 'brush' ? 10 : 2;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = currentTool === 'eraser' ? '#fff' : currentColor;
+
+        if (currentTool === 'spray') {
+            for (let i = 0; i < 10; i++) {
+                const offsetX = Math.random() * 20 - 10;
+                const offsetY = Math.random() * 20 - 10;
+                ctx.fillStyle = currentColor;
+                ctx.fillRect(x + offsetX, y + offsetY, 1, 1);
+            }
+            return;
+        }
+
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+    }
+</script>
+</body>
+</html>
