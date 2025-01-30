@@ -3,55 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Área de Dibujo con Herramientas</title>
+    <title>Sección para compartir</title>
     <link rel="stylesheet" href="../estilos/backgroung.css">
     <link rel="stylesheet" href="../estilos/estilos_compartir/estilosCompartir.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <header>
-    <h1>Compartir dibujos</h1>
+    <button class="secondary-button" onclick="window.history.back();" aria-label="Retroceder">
+        <i class="fas fa-arrow-left"></i>
+    </button>
 </header>
 
 <div class="main-container">
     <div class="content-container">
         <div class="tools-list">
             <!-- Aquí se mostrará la imagen recibida -->
-            <img id="imagenRecibida" alt="Imagen recibida">
+            <img id="imagenRecibida" alt="Imagen recibida" aria-describedby="descripcion-imagen">
+            <!-- Descripción para el screen reader -->
+            <p id="descripcion-imagen" class="sr-only">Imagen compartida por el usuario.</p>
         </div>
         <div class="formulario">
-            <form>
+            <form id="formulario-correo">
                 <label for="titulo">Título:</label>
-                <input type="text" id="titulo" name="titulo" required>
+                <input type="text" id="titulo" name="titulo" required aria-required="true" aria-label="Ingresa el título del dibujo">
+
                 <label for="email">Correo electrónico:</label>
-                <input type="email" id="email" name="email" required>
-                <button type="submit">Enviar</button>
+                <input type="email" id="email" name="email" required aria-required="true" aria-label="Ingresa tu correo electrónico">
+                
+                <button type="submit" aria-label="Enviar formulario">Enviar</button>
             </form>
         </div>
     </div>
 </div>
-
 <footer>
-    <p>Footer</p>
+    
 </footer>
-
 <script>
-    // Función para recibir y mostrar la imagen
-    function recibirImagen() {
-        const imagenRecibida = document.getElementById('imagenRecibida');
-        const imagenBase64 = localStorage.getItem('imagenCompartida');
-
-        if (imagenBase64) {
-            imagenRecibida.src = imagenBase64; // Mostrar la imagen recibida
-            localStorage.removeItem('imagenCompartida'); // Limpiar el LocalStorage
-        } else {
-            // Si no hay imagen en LocalStorage, mostrar la imagen predeterminada
-            imagenRecibida.src = '../assets/imagenes/Dibujo.png';
-            console.log('No se recibió ninguna imagen. Mostrando imagen predeterminada.');
-        }
+    // Función para convertir la imagen a base64 y enviarla al backend
+    function convertToBase64() {
+      const imagenRecibida = document.getElementById('imagenRecibida');
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Dibujamos la imagen en el canvas para convertirla a base64
+      canvas.width = imagenRecibida.width;
+      canvas.height = imagenRecibida.height;
+      ctx.drawImage(imagenRecibida, 0, 0, canvas.width, canvas.height);
+      
+      // Convertimos la imagen a base64
+      const base64Image = canvas.toDataURL('image/png');
+      sendToBackend(base64Image);  // Enviamos la imagen base64 al backend
     }
-
-    // Llamar a la función al cargar la página
-    window.onload = recibirImagen;
-</script>
+  
+    // Función para enviar la imagen al backend
+    function sendToBackend(base64Image) {
+      const email = document.getElementById('email').value;
+      const titulo = document.getElementById('titulo').value;
+  
+      fetch('/send-email', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: email,
+          title: titulo,
+          imageBase64: base64Image
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('Correo enviado con éxito');
+      })
+      .catch(error => console.error('Error al enviar el correo:', error));
+    }
+  
+    // Llamar la función cuando se envíe el formulario
+    document.getElementById('formulario-correo').addEventListener('submit', (event) => {
+      event.preventDefault();
+      convertToBase64();  // Convertir y enviar la imagen
+    });
+  </script>  
+<script src="../scripts/cargarFoto.js"></script>
 </body>
 </html>
