@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: javaweb
+      MYSQL_DATABASE: accesibilidad
     volumes:
       - ./deploy/my.cnf:/etc/mysql/conf.d/my.cnf:ro  # Volumen de solo lectura
       - ./deploy/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql

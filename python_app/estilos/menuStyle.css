@@ -1,0 +1,117 @@
+#main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+/* Header */
+#main-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#main-header h1 {
+    font-size: 36px;
+    color: #333;
+}
+
+/* Layout */
+#layout {
+    display: flex; /* Usa Flexbox para alinear el menú y el contenido principal */
+    align-items: flex-start; /* Alinea los elementos al inicio del eje vertical */
+}
+
+/* Sidebar Menu */
+#sidebar-menu {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.menu-item {
+    padding: 15px;
+    font-size: 32px;
+    text-align: left;
+    background-color: #FFD49A;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-item:hover {
+    background-color: #e8970e;
+}
+
+.menu-item i {
+    font-size: 24px;
+}
+
+/* Main Content */
+#main-content {
+    margin-left: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#main-content iframe {
+    width: 560px;
+    height: 315px;
+    border-radius: 10px;
+    border: #333333;
+    box-shadow: 0 0 10px rgba(0, 1, 1, 0.1);
+}
+
+/* Estilos para el contenedor del video */
+.video-container {
+    position: relative; /* Establece un contexto de posicionamiento */
+    width: 560px; /* Ancho del video */
+    height: 315px; /* Alto del video */
+    margin: 0 auto; /* Centra el contenedor si es necesario */
+}
+
+/* Estilos para el botón */
+.primary-button {
+    position: absolute; /* Posiciona el botón dentro del contenedor */
+    bottom: 10px; /* Espaciado desde la parte inferior */
+    right: 10px; /* Espaciado desde la parte derecha */
+    padding: 10px 20px;
+    font-size: 32px;
+    background-color: #FFD49A;
+    color: #000000;
+    border: 1px solid #333333; /* Ajusté el borde para que se muestre correctamente */
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+
+.primary-button:hover {
+    background-color: #e8970e;
+}
+
+.secondary-button {
+    position: absolute; /* Posiciona el botón de manera absoluta */
+    right: 10px; /* Alinea el botón a la derecha */
+    top: 500px;
+    padding: 10px 20px;
+    font-size: 32px;
+    background-color: #FFD49A;
+    color: #000000;
+    border: 1px solid #333333;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+.secondary-button:hover {
+    background-color: #e8970e;
+}
