@@ -103,6 +103,8 @@ export function deshacer() {
 export function setColor(color) {
     colorActual = color;
     herramientaActual.cambiarColor(colorActual);
+    let colorCircle = document.getElementById('colorCircle');
+    colorCircle.style.backgroundColor = color;
 }
 
 export function setGrosor(grosorSeleccionado) {
@@ -169,7 +171,7 @@ export function deleteDrawing(index) {
     localStorage.setItem("drawings", JSON.stringify(drawings));
 }
 
-export function cargarPlantilla(ruta, opacidad = 100){
+export function cargarPlantilla(ruta, opacidad = 100) {
     p5instancia.loadImage(ruta, (img) => {
         lienzo.buffer.tint(255, opacidad);
         const posX = (lienzo.buffer.width - img.width) / 2;
