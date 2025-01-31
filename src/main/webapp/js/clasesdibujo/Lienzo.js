@@ -16,7 +16,9 @@ export class Lienzo {
         this.ultimoX = null;
         this.ultimoY = null;
         this.buffer = this.p5.createGraphics(w, h);
+        this.buffer.pixelDensity(1);
         this.buffer.background(colorLienzo);
+        
         this.historial = [];
     }
 
@@ -29,6 +31,7 @@ export class Lienzo {
 
     guardarEstado() {
         let bufferActual = this.p5.createGraphics(this.w, this.h);
+        bufferActual.pixelDensity(1);
         bufferActual.image(this.buffer, 0, 0);
         this.historial.push(bufferActual);
     }
