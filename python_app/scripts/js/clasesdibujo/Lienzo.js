@@ -1,8 +1,8 @@
-import {Lapiz} from './Lapiz.js'; 
-import {Pincel} from './Pincel.js'; 
-import {Borrador} from './Borrador.js'; 
-import {Spray} from './Spray.js'; 
-import {Pintura} from './Pintura.js'; 
+import {Lapiz} from './Lapiz.js';
+import {Pincel} from './Pincel.js';
+import {Borrador} from './Borrador.js';
+import {Spray} from './Spray.js';
+import {Pintura} from './Pintura.js';
 
 export class Lienzo {
     constructor(p,x, y, w, h, title, colorLienzo) {
@@ -16,7 +16,9 @@ export class Lienzo {
         this.ultimoX = null;
         this.ultimoY = null;
         this.buffer = this.p5.createGraphics(w, h);
+        this.buffer.pixelDensity(1);
         this.buffer.background(colorLienzo);
+
         this.historial = [];
     }
 
@@ -29,6 +31,7 @@ export class Lienzo {
 
     guardarEstado() {
         let bufferActual = this.p5.createGraphics(this.w, this.h);
+        bufferActual.pixelDensity(1);
         bufferActual.image(this.buffer, 0, 0);
         this.historial.push(bufferActual);
     }
@@ -48,7 +51,7 @@ export class Lienzo {
         herramientaActual.iniciarTrazo(mx,my,this.buffer);
     }
 
-    mouseDragged(mx, my, herramientaActual) {        
+    mouseDragged(mx, my, herramientaActual) {
         if (this.ultimoX !== null && this.ultimoY !== null) {
             herramientaActual.trazar(this.ultimoX, this.ultimoY, mx, my, this.buffer)
         }
