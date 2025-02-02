@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/backgroung.css">
+    <link rel="stylesheet" href="css/temporizador.css">
+    <title>Temporizador - Memorización</title>
+</head>
+
+<body>
+    <button class="home-button" onclick="window.location.href='paginaPrincipal.html'">
+        <img src="https://cdn-icons-png.flaticon.com/128/507/507257.png">
+    </button>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="timer-wrapper">
+                <div class="timer-label">Tiempo</div>
+                <div class="timer-container">
+                    <svg class="progress-ring" width="140" height="140">
+                        <circle class="progress-ring-bg" cx="70" cy="70" r="50"></circle>
+                        <circle class="progress-ring-fg" cx="70" cy="70" r="50"></circle>
+                    </svg>
+                    <div class="timer-text" id="countdown">30</div>
+                </div>
+                <div class="timer-footer">Segundos</div>
+            </div>
+            <button class="start-button" onclick="startDrawing()">Comenzar</button>
+        </div>
+        <div class="image-container">
+            <img src="assets/plantillas/gato.webp" alt="Imagen a memorizar">
+        </div>
+    </div>
+
+    <script>
+        let timeLeft = parseInt(document.getElementById("countdown").textContent); // Obtiene el tiempo inicial desde el HTML
+        let initialTime = timeLeft; // Guarda el tiempo inicial para cálculos dinámicos
+        let timer;
+        const circumference = 2 * Math.PI * 50;
+        const progressRing = document.querySelector('.progress-ring-fg');
+    
+        function startTimer() {
+            progressRing.style.strokeDasharray = circumference;
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById("countdown").textContent = timeLeft;
+                
+                let progress = (timeLeft / initialTime) * circumference;
+                progressRing.style.strokeDashoffset = circumference - progress;
+    
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    startDrawing();
+                }
+            }, 1000);
+        }
+    
+        function startDrawing() {
+            clearInterval(timer);
+            window.location.href = 'dibujoLibre.html';
+        }
+    
+        window.onload = startTimer;
+    </script>
+    
+</body>
+
+</html>
