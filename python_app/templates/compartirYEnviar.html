@@ -40,51 +40,66 @@
     
 </footer>
 <script>
-    // Función para convertir la imagen a base64 y enviarla al backend
-    function convertToBase64() {
-      const imagenRecibida = document.getElementById('imagenRecibida');
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      
-      // Dibujamos la imagen en el canvas para convertirla a base64
-      canvas.width = imagenRecibida.width;
-      canvas.height = imagenRecibida.height;
-      ctx.drawImage(imagenRecibida, 0, 0, canvas.width, canvas.height);
-      
-      // Convertimos la imagen a base64
-      const base64Image = canvas.toDataURL('image/png');
-      sendToBackend(base64Image);  // Enviamos la imagen base64 al backend
-    }
-  
-    // Función para enviar la imagen al backend
-    function sendToBackend(base64Image) {
-      const email = document.getElementById('email').value;
-      const titulo = document.getElementById('titulo').value;
-  
-      fetch('/send-email', {
-        method: 'POST',
-        body: JSON.stringify({
-          email: email,
-          title: titulo,
-          imageBase64: base64Image
-        }),
-        headers: {
-          'Content-Type': 'application/json'
+        // Función para recibir y mostrar la imagen
+        function recibirImagen() {
+        const imagenRecibida = document.getElementById('imagenRecibida');
+        const imagenBase64 = localStorage.getItem('imagenCompartida');
+
+        if (imagenBase64) {
+            imagenRecibida.src = imagenBase64; // Mostrar la imagen recibida
+            localStorage.removeItem('imagenCompartida'); // Limpiar el LocalStorage
+        } else {
+            // Si no hay imagen en LocalStorage, mostrar la imagen predeterminada
+            imagenRecibida.src = '../assets/imagenes/Dibujo.png';
+            console.log('No se recibió ninguna imagen. Mostrando imagen predeterminada.');
         }
-      })
-      .then(response => response.json())
-      .then(data => {
-        alert('Correo enviado con éxito');
-      })
-      .catch(error => console.error('Error al enviar el correo:', error));
     }
-  
-    // Llamar la función cuando se envíe el formulario
-    document.getElementById('formulario-correo').addEventListener('submit', (event) => {
-      event.preventDefault();
-      convertToBase64();  // Convertir y enviar la imagen
+
+    // Llamar a la función al cargar la página
+    window.onload = recibirImagen;
+
+    // Manejar el envío del formulario
+    document.getElementById('formulario-correo').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const titulo = document.getElementById('titulo').value;
+        const email = document.getElementById('email').value;
+        const imagenRecibida = document.getElementById('imagenRecibida');
+
+        if (!titulo || !email || !imagenRecibida.src) {
+            alert('Por favor, completa todos los campos.');
+            return;
+        }
+
+        // Obtener la imagen en base64 desde el src de la imagen recibida
+        const imagenBase64 = imagenRecibida.src.split(',')[1]; // Obtener solo la parte base64
+
+        // Enviar los datos al backend
+        fetch('http://localhost:5000/enviar-correo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                titulo: titulo,
+                email: email,
+                imagen: imagenBase64,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Correo enviado correctamente');
+            } else {
+                alert('Error al enviar el correo');
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            alert('Error al enviar el correo');
+        });
     });
-  </script>  
+</script>
 <script src="../scripts/cargarFoto.js"></script>
 </body>
 </html>
