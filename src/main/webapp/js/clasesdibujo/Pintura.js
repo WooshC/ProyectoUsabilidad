@@ -1,7 +1,6 @@
 import { Herramienta } from './Herramienta.js';
 
 export class Pintura extends Herramienta {
-
     constructor(p5, color, grosor) {
         super(color, grosor);
         this.p5 = p5;
@@ -12,87 +11,90 @@ export class Pintura extends Herramienta {
     }
 
     iniciarTrazo(posicionX, posicionY, buffer) {
-
-        posicionX = Math.floor(posicionX);
-        posicionY = Math.floor(posicionY);
-
-        const nuevoColor = this.p5.color(this.colorImpregnado).levels;
+        const nuevoColor = this.p5.color(this.colorImpregnado);
         buffer.loadPixels();
 
-        const pixels = buffer.pixels;
-        const width = buffer.width;
+        const xInicial = Math.round(posicionX);
+        const yInicial = Math.round(posicionY);
 
-        const getPixelColor = (x, y) => {
+        const targetColor = this.getPixelColor(buffer, xInicial, yInicial);
+        const nuevoColorRGBA = this.colorToRGBA(nuevoColor);
 
-            let idx = 4 *(y * width + x);
-
-            return [pixels[idx], pixels[idx + 1], pixels[idx + 2], pixels[idx + 3]];
-        };
-
-        const setPixelColor = (x, y, color) => {
-
-            let idx = 4 *(y * width + x);
-
-            pixels[idx] = color[0];
-            pixels[idx + 1] = color[1];
-            pixels[idx + 2] = color[2];
-            pixels[idx + 3] = color[3];
-        };
-
-        let targetColor = getPixelColor(posicionX, posicionY);
-
-
-        let esElMismo = this.coloresIguales(targetColor, nuevoColor, 0);
-        if (esElMismo) {
+        if (this.coloresIguales(targetColor, nuevoColorRGBA)) {
             return;
         }
 
-        let pixelActivo = new Set();
-        let stack = [[posicionX, posicionY]];
+        const procesado = new Array(buffer.width)
+            .fill()
+            .map(() => new Array(buffer.height).fill(false));
 
-        const deberiaColorearPixel = (x1, y1) => {
-            if (x1 < 0 ||
-                y1 < 0 ||
-                x1 > buffer.width ||
-                y1 > buffer.height) { return false; }
-
-            let idx = y1 * buffer.width + x1;
-            if (pixelActivo.has(idx)) { return false; }
-
-            let esteColor = getPixelColor(x1, y1);
-            return this.coloresIguales(esteColor, targetColor);
-        };
+        const stack = [[xInicial, yInicial]];
 
         while (stack.length > 0) {
-            let [x, y] = stack.pop();
-            let idx = y * buffer.width + x;
+            const [x, y] = stack.pop();
 
-            if (!pixelActivo.has(idx)) {
-                setPixelColor(x, y, nuevoColor);
-                pixelActivo.add(idx);
+            const xRedondeado = Math.round(x);
+            const yRedondeado = Math.round(y);
 
-                let direcciones = [
-                    [0, -1],
-                    [1, 0],
-                    [0, 1],
-                    [-1, 0],
-                ];
+            if (
+                xRedondeado < 0 ||
+                yRedondeado < 0 ||
+                xRedondeado >= buffer.width ||
+                yRedondeado >= buffer.height ||
+                procesado[xRedondeado][yRedondeado]
+            ) {
+                continue;
+            }
 
-                for (let [xOffset, yOffset] of direcciones) {
-                    if (deberiaColorearPixel(x + xOffset, y + yOffset)) {
-                        stack.push([x + xOffset, y + yOffset]);
-                    }
-                }
+            const currentColor = this.getPixelColor(buffer, xRedondeado, yRedondeado);
+
+            if (this.coloresIguales(currentColor, targetColor)) {
+                this.setPixelColor(buffer, xRedondeado, yRedondeado, nuevoColorRGBA);
+                procesado[xRedondeado][yRedondeado] = true;
+
+                // Agregar vecinos al stack (redondeados)
+                stack.push([xRedondeado + 1, yRedondeado]);
+                stack.push([xRedondeado - 1, yRedondeado]);
+                stack.push([xRedondeado, yRedondeado + 1]);
+                stack.push([xRedondeado, yRedondeado - 1]);
             }
         }
 
         buffer.updatePixels();
     }
 
-    coloresIguales(col1, col2, tolerancia = 10) {
-        col1 = this.normalizarColor(col1);
-        col2 = this.normalizarColor(col2);
+    getPixelColor(buffer, x, y) {
+        const xRedondeado = Math.round(x);
+        const yRedondeado = Math.round(y);
+        const idx = (yRedondeado * buffer.width + xRedondeado) * 4;
+        return [
+            buffer.pixels[idx],     
+            buffer.pixels[idx + 1], 
+            buffer.pixels[idx + 2], 
+            buffer.pixels[idx + 3],
+        ];
+    }
 
+    setPixelColor(buffer, x, y, color) {
+        const xRedondeado = Math.round(x);
+        const yRedondeado = Math.round(y);
+        const idx = (yRedondeado * buffer.width + xRedondeado) * 4;
+        buffer.pixels[idx] = color[0];     
+        buffer.pixels[idx + 1] = color[1]; 
+        buffer.pixels[idx + 2] = color[2]; 
+        buffer.pixels[idx + 3] = color[3]; 
+    }
+
+    colorToRGBA(color) {
+        return [
+            this.p5.red(color),
+            this.p5.green(color),
+            this.p5.blue(color),
+            this.p5.alpha(color),
+        ];
+    }
+
+    coloresIguales(col1, col2, tolerancia = 10) {
         return (
             Math.abs(col1[0] - col2[0]) <= tolerancia &&
             Math.abs(col1[1] - col2[1]) <= tolerancia &&
@@ -101,21 +103,5 @@ export class Pintura extends Herramienta {
         );
     }
 
-    normalizarColor(color) {
-        if (color instanceof this.p5.color) {
-            return [
-                this.p5.red(color),
-                this.p5.green(color),
-                this.p5.blue(color),
-                this.p5.alpha(color),
-            ];
-        } else {
-            if (color.length === 3) {
-                return [...color, 255];
-            }
-            return color;
-        }
-    }
-
-    trazar(ultimoX, ultimoY, actualX, actualY, buffer) { }
+    trazar(ultimoX, ultimoY, actualX, actualY, buffer) {}
 }

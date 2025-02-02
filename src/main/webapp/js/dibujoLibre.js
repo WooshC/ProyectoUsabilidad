@@ -3,7 +3,7 @@ import { Lapiz } from './clasesdibujo/Lapiz.js';
 import { Pincel } from './clasesdibujo/Pincel.js';
 import { Pintura } from './clasesdibujo/Pintura.js';
 import { Spray } from './clasesdibujo/Spray.js';
-import { Lienzo } from './clasesdibujo/lienzo.js';
+import { Lienzo } from './clasesdibujo/Lienzo.js';
 
 let p5instancia;
 let lienzo;
@@ -12,6 +12,7 @@ let herramientaActual;
 let grosorTrazo = "pequeño";
 let colorLienzo = "#FFF8E1";
 let dentroLienzo = false;
+let canvasContainer;
 
 //FUNCIONES QUE CREAN O MODIFICAN ELEMENTOS DIRECTAMENTE EN EL ARBOL DE ELEMENTOS HTML
 function ocultarCanvas() {
@@ -74,13 +75,12 @@ const sketch = (p) => {
     p.preload = () => {
         p5instancia = p;
         herramientaActual = new Lapiz(p5instancia, colorActual, "pequeño");
+        canvasContainer = p.select('#canvas');
     }
 
     p.setup = () => {
-        let canvasContainer = p.select('#canvas');
         let canva = p.createCanvas(canvasContainer.width, canvasContainer.height);
-        canva.position(canvasContainer.position().x, canvasContainer.position().y);
-        lienzo = new Lienzo(p, 0, 0, canva.width, canva.height, "nuevo", colorLienzo);
+        lienzo = new Lienzo(p, 0, 0, canvasContainer.width, canvasContainer.height, "nuevo", colorLienzo);
         canva.parent('#canvas');
         ocultarCanvas();
     };
@@ -117,6 +117,7 @@ export function setHerramienta(herramienta) {
     if (herramienta == "pincel") herramientaActual = new Pincel(colorActual, grosorTrazo);
     if (herramienta == "spray") herramientaActual = new Spray(p5instancia, colorActual, grosorTrazo);
     if (herramienta == "pintura") herramientaActual = new Pintura(p5instancia, colorActual, grosorTrazo);
+
 }
 export function setColor(color) {
     colorActual = color;
@@ -228,7 +229,7 @@ export function saveDrawingWithConfirmation() {
         "Guardar Dibujo",
         "¿Estás seguro de que quieres guardar este dibujo?",
         saveDrawing, // Acción si acepta
-        () => {} // Acción si rechaza
+        () => { } // Acción si rechaza
     );
 }
 //Borrar
@@ -237,7 +238,7 @@ export function deleteDrawingWithConfirmation() {
         "Eliminar Dibujo",
         "¿Estás seguro de que quieres eliminar este dibujo?",
         deleteDrawing, // Acción si acepta
-        () => {} // Acción si rechaza
+        () => { } // Acción si rechaza
     );
 }
 //Descargar
@@ -246,7 +247,7 @@ export function downloadDrawingWithConfirmation() {
         "Descargar Dibujo",
         "¿Estás seguro de que quieres descargar este dibujo?",
         downloadLienzo, // Acción si acepta
-        () => {} // Acción si rechaza
+        () => { } // Acción si rechaza
     );
 }
 
