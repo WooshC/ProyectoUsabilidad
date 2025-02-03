@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../estilos/backgroung.css">
     <link rel="stylesheet" href="../estilos/estilos_galeria/galeria.css">
+    <link rel="stylesheet" href="../estilos/estilos_dibujo_libre/modal.css">
     <title>Galería</title>
 </head>
 
@@ -17,11 +18,7 @@
     <div class="carousel-container">
         <button class="button button-left" onclick="prevCanvas()">&#9664;</button>
         <div class="carousel">
-            <div class="lienzo" id="canvas1">Lienzo 1</div>
-            <div class="lienzo" id="canvas2">Lienzo 2</div>
-            <div class="lienzo" id="canvas3">Lienzo 3</div>
-            <div class="lienzo" id="canvas4">Lienzo 4</div>
-            <div class="lienzo" id="canvas5">Lienzo 5</div>
+
         </div>
         <button class="button button-right" onclick="nextCanvas()">&#9654;</button>
     </div>
@@ -33,8 +30,8 @@
         </div>
         <div class="control-group">
             <span>Eliminar</span>
-            <button onclick="deleteCanvas()"><img src="https://cdn-icons-png.flaticon.com/128/1214/1214428.png"
-                    alt="Eliminar"></button>
+            <button onclick="deleteDrawingWithConfirmation()"><img
+                    src="https://cdn-icons-png.flaticon.com/128/1214/1214428.png" alt="Eliminar"></button>
         </div>
         <div class="control-group">
             <span>Compartir</span>
@@ -42,58 +39,22 @@
                     alt="Compartir"></button>
         </div>
     </div>
-    <script>
-        let currentIndex = -1; // Iniciar con el primer lienzo centrado
-        const carousel = document.querySelector(".carousel");
-        let canvases = document.querySelectorAll(".lienzo");
-        let totalCanvases = canvases.length;
-
-        function updateCarousel() {
-            const offset = -currentIndex * (400 + 30); // 400px de ancho + 30px de margen
-            carousel.style.transform = `translateX(${offset}px)`;
-        }
-
-        function prevCanvas() {
-            if (currentIndex > -1) {
-                currentIndex--;
-                updateCarousel();
-            }
-        }
-
-        function nextCanvas() {
-            if (currentIndex < totalCanvases - 2) {
-                currentIndex++;
-                updateCarousel();
-            }
-        }
-
-        function downloadCanvas() {
-            const currentCanvas = canvases[currentIndex + 1];
-            alert(`Descargando ${currentCanvas.textContent}`);
-            // Aquí puedes agregar la lógica para descargar el lienzo actual
-        }
-
-        function deleteCanvas() {
-            if (totalCanvases > 1) {
-                const canvasToRemove = canvases[currentIndex + 1];
-                carousel.removeChild(canvasToRemove);
-                canvases = document.querySelectorAll(".lienzo");
-                totalCanvases = canvases.length;
-                if (currentIndex >= totalCanvases) {
-                    currentIndex = totalCanvases - 1;
-                }
-                updateCarousel();
-            }
-        }
-
-        function shareCanvas() {
-            const currentCanvas = canvases[currentIndex + 1];
-            alert(`Compartiendo ${currentCanvas.textContent}`);
-            // Aquí puedes agregar la lógica para compartir el lienzo actual
-        }
-
-        updateCarousel();
-    </script>
+    <!-- Modal -->
+    <div id="actionModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">¿Estás seguro?</h2>
+            <p id="modalMessage">¿Deseas realizar esta acción?</p>
+            <div class="modal-actions">
+                <button id="confirmButton" class="modal-button">Aceptar</button>
+                <button id="cancelButton" class="modal-button">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    <!-- Contenedor para el mensaje de éxito -->
+    <div id="successMessage" class="success-message">
+        <p id="successText">¡Operación realizada con éxito!</p>
+    </div>
+<script src="../scripts/controlGaleria.js"></script>
 </body>
 
 </html>

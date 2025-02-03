@@ -28,15 +28,19 @@ body {
 
 .lienzo {
     background-color: #D1B27A;
-    width: 400px;
-    height: 220px;
     border: 1px solid #000;
+    width: 400;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     margin: 0 15px;
     flex: 0 0 auto;
+}
+
+.lienzo img {
+    width: 100%;
+    height: 100%;
 }
 
 .button {

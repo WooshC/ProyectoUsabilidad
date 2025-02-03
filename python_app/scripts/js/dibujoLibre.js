@@ -229,13 +229,6 @@ window.onload = function () {   //cargar dibujo
     setupMediaPipe();
 };
 
-function deleteDrawing(index) {
-    const drawings = JSON.parse(localStorage.getItem("drawings")) || [];
-    drawings.splice(index, 1);
-    localStorage.setItem("drawings", JSON.stringify(drawings));
-    showSuccessMessage("¡Dibujo Borrado con éxito!");
-}
-
 //FUNCIONES QUE REQUIEREN CONFIRMACIÓN
 //Guardar
 export function saveDrawingWithConfirmation() {
@@ -243,15 +236,6 @@ export function saveDrawingWithConfirmation() {
         "Guardar Dibujo",
         "¿Estás seguro de que quieres guardar este dibujo?",
         saveDrawing, // Acción si acepta
-        () => { } // Acción si rechaza
-    );
-}
-//Borrar
-export function deleteDrawingWithConfirmation() {
-    showDialog(
-        "Eliminar Dibujo",
-        "¿Estás seguro de que quieres eliminar este dibujo?",
-        deleteDrawing, // Acción si acepta
         () => { } // Acción si rechaza
     );
 }
@@ -263,33 +247,6 @@ export function downloadDrawingWithConfirmation() {
         downloadLienzo, // Acción si acepta
         () => { } // Acción si rechaza
     );
-}
-
-export function loadGallery() {
-    const gallery = document.getElementById("gallery");
-    gallery.innerHTML = "";
-
-    const drawings = JSON.parse(localStorage.getItem("drawings")) || [];
-    drawings.forEach((drawing, index) => {
-        const thumbnail = document.createElement("div");
-        thumbnail.className = "thumbnail";
-
-        const img = document.createElement("img");
-        img.src = drawing;
-        img.alt = `Dibujo ${index + 1}`;
-        img.onclick = () => {
-            localStorage.setItem("selectedDrawing", JSON.stringify(drawing)); // Guardamos el dibujo seleccionado
-            window.location.href = "./dibujoLibre.html"; // Redirigir a la página de dibujo
-        };
-
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Eliminar";
-        deleteButton.onclick = () => deleteDrawing(index);
-
-        thumbnail.appendChild(img);
-        thumbnail.appendChild(deleteButton);
-        gallery.appendChild(thumbnail);
-    });
 }
 
 function iniciarContador() {
@@ -460,11 +417,9 @@ window.setGrosor = setGrosor;
 window.clearLienzo = clearLienzo;
 window.toggleColors = toggleColors;
 window.setHerramienta = setHerramienta;
-window.loadGallery = loadGallery;
 window.cargarPlantilla = cargarPlantilla;
 window.toggleGrosor = toggleGrosor;
 window.saveDrawingWithConfirmation = saveDrawingWithConfirmation;
-window.deleteDrawingWithConfirmation = deleteDrawingWithConfirmation;
 window.downloadDrawingWithConfirmation = downloadDrawingWithConfirmation;
 window.toggleCamera = toggleCamera;
 window.toggleHandDrawing = toggleHandDrawing;
