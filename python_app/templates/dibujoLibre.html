@@ -82,7 +82,8 @@
                         <button class="tool" id="saveButton" onclick="saveDrawingWithConfirmation()"
                                 alt="guardar lienzo en la galería"><img
                                         src="https://cdn-icons-png.flaticon.com/128/907/907027.png">Guardar</button>
-                        <button class="tool" id="download" onclick="downloadDrawingWithConfirmation()" alt="Descargar lienzo"><img
+                        <button class="tool" id="download" onclick="downloadDrawingWithConfirmation()"
+                                alt="Descargar lienzo"><img
                                         src="https://cdn-icons-png.flaticon.com/128/892/892634.png">Descargar</button>
                         <button class="action-btn" id="help" alt="Ayuda"><img
                                         src="https://cdn-icons-png.flaticon.com/128/189/189665.png"></button>
@@ -106,6 +107,11 @@
         </div>
 
         <script type="module" src="../scripts/js/dibujoLibre.js"></script>
+        <script type="module">
+                window.onload = function () {
+                        cargarDibujo();
+                };
+        </script>
 </body>
 
 </html>

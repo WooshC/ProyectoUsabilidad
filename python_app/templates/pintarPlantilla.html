@@ -8,10 +8,10 @@
     <script src="https://unpkg.com/ml5@latest/dist/ml5.js"></script>
     <link rel="stylesheet" href="../estilos/estilos_dibujo_libre/modal.css">
     <link rel="stylesheet" href="../estilos/backgroung.css">
-    <title>Imita y dibuja</title>
+    <script type="module" src="../scripts/js/dibujoLibre.js"></script>
+    <title>Prototipo Dibujo</title>
     <link rel="stylesheet" href="../estilos/estilos_dibujo_libre/dibujoLibre.css">
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <link rel="stylesheet" href="../estilos/estilos_pintar_plantilla/menuDesplegable.css">
 
 </head>
 
@@ -21,7 +21,6 @@
             src="https://cdn-icons-png.flaticon.com/128/507/507257.png"></button>
 
     <div class="contenedor">
-
         <div class="menu-lateral">
             <button class="tool" id="boton deshacer" onclick="deshacer()" alt="opción deshacer última acción">
                 <img src="https://cdn-icons-png.flaticon.com/128/18149/18149393.png">Deshacer
@@ -36,8 +35,6 @@
                 <div class="grosor-box grosor-large" onclick="setGrosor('grande')"></div>
             </div>
 
-            <button class="tool" id="pencil" onclick="setHerramienta('lapiz')" alt="Herramienta lápiz"><img
-                    src="https://cdn-icons-png.flaticon.com/128/2280/2280532.png">Lápiz</button>
             <button class="tool" id="brush" onclick="setHerramienta('pincel')" alt="Herramienta pincel"><img
                     src="https://cdn-icons-png.flaticon.com/128/595/595743.png">Pincel</button>
             <button class="tool" id="spray" onclick="setHerramienta('spray')" alt="Herramienta spray"><img
@@ -72,22 +69,6 @@
             </div>
         </div>
 
-        <!-- Contenedor de la cámara -->
-        <div class="camera-container" id="cameraContainer">
-            <button id="toggleCameraButton" onclick="toggleCamera()">
-                Ocultar cámara
-            </button>
-            <button id="toggleHandDrawingButton" onclick="toggleHandDrawing()">
-                Dibujar con la mano (F)
-            </button>
-            <video id="webcam" width="320" height="240" autoplay></video>
-            <button id="captureButton" onclick="captureImage()">Capturar Imagen</button>
-            <div id="imageContainer">
-                <canvas id="templateCanvas" width="320" height="240"></canvas>
-            </div>
-        </div>
-
-
         <div class="lienzo">
             <div id="canvas"></div>
         </div>
@@ -100,6 +81,8 @@
                     src="https://cdn-icons-png.flaticon.com/128/907/907027.png">Guardar</button>
             <button class="tool" id="download" onclick="downloadDrawingWithConfirmation()" alt="Descargar lienzo"><img
                     src="https://cdn-icons-png.flaticon.com/128/892/892634.png">Descargar</button>
+            <button class="tool" id="toggleMenu" onclick="toggleImageMenu()" alt="Cambiar Plantilla"><img
+                    src="https://cdn-icons-png.flaticon.com/128/8630/8630282.png">Cambiar plantilla</button>
             <button class="action-btn" id="help" alt="Ayuda"><img
                     src="https://cdn-icons-png.flaticon.com/128/189/189665.png"></button>
         </div>
@@ -121,12 +104,56 @@
         <p id="successText">¡Operación realizada con éxito!</p>
     </div>
 
-    <script type="module" src="../scripts/js/dibujoLibre.js"></script>
+    <!-- Menú de imágenes oculto -->
+    <div id="imageMenu">
+        <div id="imageContainer" class="image-container">
+            <!-- Las imágenes se cargarán aquí dinámicamente -->
+        </div>
+    </div>
+
     <script type="module">
-        window.onload = function () {
-            setupMediaPipe();
+
+        // Función para mostrar/ocultar el menú de imágenes
+        export function toggleImageMenu() {
+            const menu = document.getElementById('imageMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Función para cargar las imágenes desde una carpeta
+        function loadImagesFromFolder() {
+            const imageContainer = document.getElementById('imageContainer');
+            const imagePaths = [
+                '../assets/plantillas/gato.webp',
+                '../assets/plantillas/koala.avif',
+                '../assets/plantillas/helados.avif'
+            ];
+
+            imagePaths.forEach(path => {
+                const imgElement = document.createElement('img');
+                imgElement.src = path;
+                imgElement.alt = path;
+                imgElement.onclick = () => selectImage(path);
+                imageContainer.appendChild(imgElement);
+            });            
+            selectImage("../assets/plantillas/helados.avif")
+        }
+
+        // Función que se ejecuta al seleccionar una imagen
+        function selectImage(imagePath) {
+            console.log('Imagen seleccionada:', imagePath);
+            cargarPlantilla(imagePath, 255); 
+            clearLienzo();
+            setColorLienzo("white");
         };
+
+        window.onload = function () {
+            loadImagesFromFolder();
+            toggleImageMenu()
+        };
+
+        window.toggleImageMenu = toggleImageMenu
     </script>
+    
 </body>
 
 </html>

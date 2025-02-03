@@ -130,6 +130,11 @@ export function setHerramienta(herramienta) {
 
 }
 
+export function setColorLienzo(color) {
+    colorLienzo = color;
+    lienzo.buffer.background(color);
+}
+
 export function setColor(color) {
     colorActual = color;
     herramientaActual.cambiarColor(colorActual);
@@ -188,6 +193,17 @@ export function clearLienzo() {
     lienzo.limpiarLienzo(colorLienzo);
 }
 
+export function cargarDibujo() {
+    const selectedDrawing = JSON.parse(localStorage.getItem("selectedDrawing"));
+    if (selectedDrawing) {
+        const img = p5instancia.loadImage(selectedDrawing, (img) => {
+            lienzo.buffer.image(img, 0, 0);
+        });
+        showSuccessMessage("¡Dibujo cargado con éxito!");
+    }
+    localStorage.removeItem("selectedDrawing");
+}
+
 export function cargarPlantilla(ruta, opacidad = 100) {
     p5instancia.loadImage(ruta, (img) => {
         lienzo.buffer.tint(255, opacidad);
@@ -216,18 +232,6 @@ function saveDrawing() {
     localStorage.setItem("drawings", JSON.stringify(drawings));
     showSuccessMessage("¡Dibujo guardado con éxito!");
 }
-
-window.onload = function () {   //cargar dibujo
-    const selectedDrawing = JSON.parse(localStorage.getItem("selectedDrawing"));
-    if (selectedDrawing) {
-        const img = p5instancia.loadImage(selectedDrawing, (img) => {
-            lienzo.buffer.image(img, 0, 0);
-        });
-        showSuccessMessage("¡Dibujo cargado con éxito!");
-    }
-    localStorage.removeItem("selectedDrawing");
-    setupMediaPipe();
-};
 
 //FUNCIONES QUE REQUIEREN CONFIRMACIÓN
 //Guardar
@@ -302,7 +306,7 @@ function captureImage() {
 
 
 
-function setupMediaPipe() {
+export function setupMediaPipe() {
     hands = new Hands({
         locateFile: (file) => {
             return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
@@ -364,7 +368,7 @@ function toggleCamera() {
 }
 
 
- function toggleHandDrawing() {
+function toggleHandDrawing() {
     handDrawingEnabled = !handDrawingEnabled;
     const toggleButton = document.getElementById("toggleHandDrawingButton");
 
@@ -414,12 +418,15 @@ window.iniciarContador = iniciarContador;
 window.deshacer = deshacer;
 window.setColor = setColor;
 window.setGrosor = setGrosor;
+window.setColorLienzo = setColorLienzo;
 window.clearLienzo = clearLienzo;
 window.toggleColors = toggleColors;
 window.setHerramienta = setHerramienta;
 window.cargarPlantilla = cargarPlantilla;
+window.cargarDibujo = cargarDibujo;
 window.toggleGrosor = toggleGrosor;
 window.saveDrawingWithConfirmation = saveDrawingWithConfirmation;
 window.downloadDrawingWithConfirmation = downloadDrawingWithConfirmation;
 window.toggleCamera = toggleCamera;
 window.toggleHandDrawing = toggleHandDrawing;
+window.setupMediaPipe=setupMediaPipe
