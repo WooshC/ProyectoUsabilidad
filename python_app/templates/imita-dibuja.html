@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="../estilos/backgroung.css">
     <title>Imita y dibuja</title>
     <link rel="stylesheet" href="../estilos/estilos_dibujo_libre/dibujoLibre.css">
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+
 </head>
 
 <body>
@@ -73,17 +76,20 @@
         </div>
     </div>
 
-    <!-- Contenedor de la cámara -->
-    <div class="camera-container" id="cameraContainer">
-        <button id="toggleCameraButton" onclick="toggleCamera()">
-            Ocultar cámara
-        </button>
-        <video id="webcam" width="320" height="240" autoplay></video>
-        <button id="captureButton" onclick="captureImage()">Capturar Imagen</button>
-        <div id="imageContainer">
-            <canvas id="templateCanvas" width="320" height="240"></canvas>
-        </div>
+   <!-- Contenedor de la cámara -->
+<div class="camera-container" id="cameraContainer">
+    <button id="toggleCameraButton" onclick="toggleCamera()">
+        Ocultar cámara
+    </button>
+    <button id="toggleHandDrawingButton" onclick="toggleHandDrawing()">
+        Dibujar con la mano (F)
+    </button>
+    <video id="webcam" width="320" height="240" autoplay></video>
+    <button id="captureButton" onclick="captureImage()">Capturar Imagen</button>
+    <div id="imageContainer">
+        <canvas id="templateCanvas" width="320" height="240"></canvas>
     </div>
+</div>
 
 
     <div class="lienzo">
@@ -118,46 +124,6 @@
 <div id="successMessage" class="success-message">
     <p id="successText">¡Operación realizada con éxito!</p>
 </div>
-<script>
-
-    let cameraStream = null;  // Variable global para almacenar el stream de la cámara
-
-    // Función para alternar la cámara
-    function toggleCamera() {
-        const cameraContainer = document.getElementById("cameraContainer");
-        const webcam = document.getElementById("webcam");
-        const toggleButton = document.getElementById("toggleCameraButton");
-        const toggleText = document.getElementById("toggleCameraButton");
-
-        // Si la cámara está visible (el video está activo), apagamos la cámara
-        if (webcam.style.display !== "none") {
-            // Detener el stream de la cámara
-            if (cameraStream) {
-                const tracks = cameraStream.getTracks(); // Obtener los tracks del stream
-                tracks.forEach(track => track.stop()); // Detener cada track
-                cameraStream = null; // Limpiar la referencia al stream
-            }
-
-            // Apagar la cámara (ocultar el video)
-            webcam.style.display = "none";
-            cameraContainer.classList.add("hidden");  // Ocultamos el contenedor de la cámara
-            toggleText.textContent = "Mostrar Cámara";  // Cambiar el texto del botón
-        } else {
-            // Encender la cámara y mostrar el video
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then((stream) => {
-                    cameraStream = stream;  // Guardamos el stream de la cámara
-                    webcam.srcObject = stream;  // Asignamos el stream al video
-                    webcam.style.display = "block";  // Mostramos el video
-                    cameraContainer.classList.remove("hidden");  // Mostramos el contenedor de la cámara
-                    toggleText.textContent = "Ocultar Cámara";  // Cambiar el texto del botón
-                })
-                .catch((err) => {
-                    console.error("Error al acceder a la cámara: ", err);
-                });
-        }
-    }
-</script>
 
 <script type="module" src="../scripts/js/dibujoLibre.js"></script>
 </body>
