@@ -10,16 +10,16 @@
 </head>
 
 <body>
-<button class="home-button" onclick="window.history.back();" aria-label="Retroceder">
-    <img src="https://cdn-icons-png.flaticon.com/128/507/507257.png" alt="Icono retroceder">
-</button>
-<h1>HandiDraw - Logros</h1>
+    <button class="home-button" onclick="window.history.back();" aria-label="Retroceder" tabindex="0">
+        <img src="https://cdn-icons-png.flaticon.com/128/507/507257.png" alt="Icono retroceder" role="img" aria-label="Retroceder">
+    </button>
+    <h1>HandiDraw - Logros</h1>
     <div class="container">
-        <div class="main-achievement">
-            <img id="mainImage" src="https://cdn-icons-png.flaticon.com/128/7919/7919816.png" alt="Imágen de logro principal">
-            <p id="description">Aprendiste a recordar una imagen en tu cerebro como un campeón</p>
+        <div class="main-achievement" aria-live="polite">
+            <img id="mainImage" src="https://cdn-icons-png.flaticon.com/128/7919/7919816.png" alt="Imagen representativa del logro principal: recordando una imagen" role="img">
+            <p id="description" aria-live="assertive">Aprendiste a recordar una imagen en tu cerebro como un campeón</p>
         </div>
-        <div class="shelf" id="shelf">
+        <div class="shelf" id="shelf" role="list" aria-label="Estante de logros" tabindex="0">
         </div>
     </div>
     <script>
@@ -37,16 +37,19 @@
 
         const shelf = document.getElementById('shelf');
 
-        achievements.forEach(achievement => {
+        achievements.forEach((achievement, index) => {
             let imgElement = document.createElement('img');
             imgElement.src = achievement.img;
             imgElement.alt = achievement.desc;
             imgElement.onclick = () => changeAchievement(achievement.img, achievement.desc);
+            imgElement.tabIndex = index + 1; // Asegura que las imágenes sean accesibles por teclado
+            imgElement.setAttribute('role', 'listitem');
             shelf.appendChild(imgElement);
         });
 
         function changeAchievement(image, description) {
             document.getElementById('mainImage').src = image;
+            document.getElementById('mainImage').alt = description; // Actualiza el alt de la imagen principal
             document.getElementById('description').textContent = description;
         }
     </script>
