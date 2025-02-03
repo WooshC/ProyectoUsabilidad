@@ -1,9 +1,9 @@
 import { Borrador } from './clasesdibujo/Borrador.js';
 import { Lapiz } from './clasesdibujo/Lapiz.js';
+import { Lienzo } from './clasesdibujo/Lienzo.js';
 import { Pincel } from './clasesdibujo/Pincel.js';
 import { Pintura } from './clasesdibujo/Pintura.js';
 import { Spray } from './clasesdibujo/Spray.js';
-import { Lienzo } from './clasesdibujo/Lienzo.js';
 
 let p5instancia;
 let lienzo;
@@ -13,6 +13,15 @@ let grosorTrazo = "pequeño";
 let colorLienzo = "#FFF8E1";
 let dentroLienzo = false;
 let canvasContainer;
+const { Camera } = window;
+const { Hands } = window;
+let isDrawing = false;
+let handDrawingEnabled = false;
+
+// Declara hands y camera como variables globales
+let hands;
+let camera;
+let cameraStream;
 
 //FUNCIONES QUE CREAN O MODIFICAN ELEMENTOS DIRECTAMENTE EN EL ARBOL DE ELEMENTOS HTML
 function ocultarCanvas() {
@@ -24,6 +33,7 @@ function ocultarCanvas() {
         }
     });
 }
+
 export function toggleColors() {
     const colorPicker = document.getElementById('color-picker');
     const colorsTool = document.getElementById('colors');
@@ -46,6 +56,7 @@ export function toggleColors() {
         colorPicker.style.display = 'none';
     }
 }
+
 export function toggleGrosor() {
     const grosorPicker = document.getElementById('grosor-options');
     const grosorTool = document.getElementById('grosor');
@@ -119,12 +130,14 @@ export function setHerramienta(herramienta) {
     if (herramienta == "pintura") herramientaActual = new Pintura(p5instancia, colorActual, grosorTrazo);
 
 }
+
 export function setColor(color) {
     colorActual = color;
     herramientaActual.cambiarColor(colorActual);
     let colorCircle = document.getElementById('colorCircle');
     colorCircle.style.backgroundColor = color;
 }
+
 export function setGrosor(grosorSeleccionado) {
     grosorTrazo = grosorSeleccionado;
     herramientaActual.definirGrosor(grosorTrazo);
@@ -166,6 +179,7 @@ function showDialog(title, message, confirmCallback, cancelCallback) {
         modal.style.display = 'none'; // Cerrar el modal
     };
 }
+
 //FUNCIONES QUE REALIZAN ACCIONES SIN CONFIRMACIÓN
 export function deshacer() {
     lienzo.deshacerAlEstadoPrevio();
@@ -213,6 +227,7 @@ window.onload = function () {   //cargar dibujo
         showSuccessMessage("¡Dibujo cargado con éxito!");
     }
     localStorage.removeItem("selectedDrawing");
+    setupMediaPipe();
 };
 
 function deleteDrawing(index) {
@@ -278,7 +293,6 @@ export function loadGallery() {
     });
 }
 
-
 function iniciarContador() {
     let tiempo = 3; // Segundos antes de capturar la imagen
     const boton = document.getElementById("captureButton");
@@ -330,11 +344,115 @@ function captureImage() {
     canvasTemplate.remove();
 }
 
+
+function setupMediaPipe() {
+    hands = new Hands({
+        locateFile: (file) => {
+            return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+        },
+    });
+
+    hands.setOptions({
+        maxNumHands: 1,
+        modelComplexity: 1,
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5,
+    });
+
+    hands.onResults(onHandResults);
+
+    // Configura la cámara
+    const webcam = document.getElementById("webcam");
+    camera = new Camera(webcam, {
+        onFrame: async () => {
+            await hands.send({ image: webcam });
+        },
+        width: 640,
+        height: 480,
+    });
+
+    camera.start();
+}
+
+function toggleCamera() {
+    const webcam = document.getElementById("webcam");
+    const cameraContainer = document.getElementById("cameraContainer");
+    const toggleButton = document.getElementById("toggleCameraButton");
+
+    if (webcam.style.display !== "none") {
+        // Si la cámara está visible, apágala
+        if (camera) {
+            const tracks = camera.getTracks();
+            tracks.forEach(track => track.stop()); // Detener todos los tracks
+            camera = null; // Limpiar la referencia al stream
+        }
+        webcam.style.display = "none"; // Ocultar el video
+        cameraContainer.classList.add("hidden"); // Ocultar el contenedor de la cámara
+        toggleButton.textContent = "Mostrar Cámara"; // Cambiar el texto del botón
+    } else {
+        // Si la cámara está oculta, enciéndela
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                camera = stream; // Guardar el stream de la cámara
+                webcam.srcObject = stream; // Asignar el stream al video
+                webcam.style.display = "block"; // Mostrar el video
+                cameraContainer.classList.remove("hidden"); // Mostrar el contenedor de la cámara
+                toggleButton.textContent = "Ocultar Cámara"; // Cambiar el texto del botón
+            })
+            .catch((err) => {
+                console.error("Error al acceder a la cámara: ", err);
+            });
+    }
+}
+
+
+ function toggleHandDrawing() {
+    handDrawingEnabled = !handDrawingEnabled;
+    const toggleButton = document.getElementById("toggleHandDrawingButton");
+
+    if (handDrawingEnabled) {
+        toggleButton.textContent = "Dibujar con el mouse (F)";
+        console.log("Modo de dibujo con la mano activado.");
+    } else {
+        toggleButton.textContent = "Dibujar con la mano (F)";
+        console.log("Modo de dibujo con el mouse activado.");
+    }
+}
+
+
+// Escuchar la tecla "F" para alternar el modo de dibujo
+document.addEventListener("keydown", (event) => {
+    if (event.key === "f" || event.key === "F") {
+        toggleHandDrawing();
+    }
+});
+
+function onHandResults(results) {
+    if (handDrawingEnabled && results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+        const landmarks = results.multiHandLandmarks[0]; // Primera mano detectada
+        if (landmarks && landmarks.length > 8) {  // Verificar que el índice 8 (punta del dedo índice) existe
+            const indexFingerTip = landmarks[8]; // Punta del dedo índice
+
+            // Invertir la coordenada x para corregir el modo espejo
+            const x = (1 - indexFingerTip.x) * lienzo.w; // Invertir la coordenada X
+            const y = indexFingerTip.y * lienzo.h;
+
+            if (!isDrawing) {
+                isDrawing = true;
+                lienzo.mousePressed(x, y, herramientaActual); // Iniciar trazo
+            } else {
+                lienzo.mouseDragged(x, y, herramientaActual); // Continuar trazo
+            }
+        }
+    } else if (isDrawing) {
+        isDrawing = false;
+        lienzo.mouseReleased(); // Finalizar trazo si no hay mano
+    }
+}
+
 window.captureImage = captureImage;
 // Hacer accesible globalmente
 window.iniciarContador = iniciarContador;
-
-
 window.deshacer = deshacer;
 window.setColor = setColor;
 window.setGrosor = setGrosor;
@@ -347,3 +465,5 @@ window.toggleGrosor = toggleGrosor;
 window.saveDrawingWithConfirmation = saveDrawingWithConfirmation;
 window.deleteDrawingWithConfirmation = deleteDrawingWithConfirmation;
 window.downloadDrawingWithConfirmation = downloadDrawingWithConfirmation;
+window.toggleCamera = toggleCamera;
+window.toggleHandDrawing = toggleHandDrawing;
