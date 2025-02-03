@@ -4,35 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compartir</title>
+    <title>HandiDraw - Compartir</title>
     <link rel="stylesheet" href="../estilos/backgroung.css">
     <link rel="stylesheet" href="../estilos//estilos_compartir/estilosCompartir.css">
 </head>
 
 <body>
-    <button class="home-button" onclick="window.location.href='menuPrincipal.html'">
-        <img src="https://cdn-icons-png.flaticon.com/128/507/507257.png" alt="Home">
+    <button class="home-button" onclick="window.location.href='menuPrincipal.html'" aria-label="Ir a la página principal" tabindex="0">
+        <img src="https://cdn-icons-png.flaticon.com/128/507/507257.png" alt="Icono de inicio" aria-hidden="true">
     </button>
     <div class="main-container">
         <!-- Contenedor de la imagen seleccionada -->
         <div class="left-container">
             <h3 id="selected-title">Imagen seleccionada</h3>
-            <img id="selected-image" src="../assets/plantillas/gato.webp" alt="Imagen seleccionada">
+            <img id="selected-image" src="../assets/plantillas/gato.webp" alt="Una imagen de un gato seleccionada por el usuario" aria-labelledby="selected-title" tabindex="0">
         </div>
 
         <!-- Contenedor del Formulario -->
         <div class="right-container">
-            <form action="#" method="post">
+            <form action="#" method="post" aria-labelledby="form-title">
+                <h2 id="form-title" class="sr-only">Formulario para compartir tu obra de arte</h2>
                 <label for="art-title">Nombre de tu obra de arte</label>
-                <input type="text" id="art-title" name="art-title" required>
+                <input type="text" id="art-title" name="art-title" required aria-required="true" placeholder="Escribe el nombre de tu obra" tabindex="0">
 
                 <label for="name">Ingresa tu nombre</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" required aria-required="true" placeholder="Escribe tu nombre completo" tabindex="0">
 
                 <label for="email">Correo electrónico</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" required aria-required="true" placeholder="Escribe tu correo electrónico" tabindex="0">
 
-                <button type="submit">Enviar</button>
+                <button type="submit" tabindex="0">Enviar</button>
             </form>
         </div>
     </div>

@@ -6,29 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../estilos/backgroung.css">
     <link rel="stylesheet" href="../estilos//temporizador.css">
-    <title>Temporizador - Memorización</title>
+    <title>HandiDraw - Temporizador</title>
 </head>
 
 <body>
-    <button class="home-button" onclick="window.location.href='menuPrincipal.html'">
-        <img src="https://cdn-icons-png.flaticon.com/128/507/507257.png">
+
+    <!-- Botón de inicio con accesibilidad -->
+    <button class="home-button" onclick="window.location.href='menuPrincipal.html'" aria-label="Volver a la página principal" tabindex="0">
+        <img src="https://cdn-icons-png.flaticon.com/128/507/507257.png" alt="Icono de casa para volver a la página principal">
     </button>
 
     <div class="container">
         <div class="sidebar">
+            <!-- Temporizador con accesibilidad -->
             <div class="timer-wrapper">
-                <div class="timer-label">Tiempo</div>
+                <div class="timer-label" aria-live="polite">Tiempo</div>
                 <div class="timer-container">
-                    <svg class="progress-ring" width="140" height="140">
-                        <circle class="progress-ring-bg" cx="70" cy="70" r="50"></circle>
-                        <circle class="progress-ring-fg" cx="70" cy="70" r="50"></circle>
+                    <!-- SVG con accesibilidad para lectores de pantalla -->
+                    <svg class="progress-ring" width="140" height="140" aria-labelledby="timer-svg-description">
+                        <title id="timer-svg-description">Indicador del temporizador, círculo de progreso</title>
+                        <circle class="progress-ring-bg" cx="70" cy="70" r="50" aria-hidden="true"></circle>
+                        <circle class="progress-ring-fg" cx="70" cy="70" r="50" aria-hidden="true"></circle>
                     </svg>
-                    <div class="timer-text" id="countdown">30</div>
+                    <!-- Texto del temporizador con accesibilidad -->
+                    <div class="timer-text" id="countdown" aria-live="assertive" tabindex="0">30</div>
                 </div>
                 <div class="timer-footer">Segundos</div>
             </div>
-            <button class="start-button" onclick="startDrawing()">Comenzar</button>
+            <!-- Botón para iniciar el temporizador -->
+            <button class="start-button" onclick="startDrawing()" aria-label="Iniciar temporizador de memorización" tabindex="0">Comenzar</button>
         </div>
+
+        <!-- Contenedor de la imagen con accesibilidad -->
         <div class="image-container">
         </div>
     </div>
@@ -45,11 +54,16 @@
 
             const image = document.createElement("img");
             image.src = "../assets/modoMemoria/gatito.jpg";
-            image.alt = "Imagen a memorizar";
+            let fileName = image.src.split('/').pop();
+            image.alt = "Imagen a memorizar de "+ fileName;
+            image.ariaDescription="image-description";
+            image.tabIndex = "0";
 
             const nuevaImagen = localStorage.getItem("imagenMemoria");
             if (nuevaImagen) {
                 image.src = nuevaImagen;
+                fileName = image.src.split('/').pop();
+                image.alt = "Imagen a memorizar de "+ fileName;
                 localStorage.removeItem("imagenMemoria");
             }
 
