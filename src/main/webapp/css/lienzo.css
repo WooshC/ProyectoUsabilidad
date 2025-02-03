@@ -1,9 +1,0 @@
-/* Estilo para el lienzo */
-.lienzo {
-    background-color: #FFF8E1; /* Color de fondo del lienzo */
-    height: 500px; /* Altura fija de 500px */
-    flex-grow: 1; /* Ocupa el resto del espacio disponible */
-    margin-left: 220px; /* Deja espacio para la paleta (paleta tiene 200px de ancho más 20px de margen) */
-    margin-top: 50px; /* Separación de 50px con el margen superior */
-    margin-bottom: 50px; /* Separación de 50px con el margen inferior */
-}

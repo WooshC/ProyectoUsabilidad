@@ -1,105 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sección para compartir</title>
+    <title>Compartir</title>
     <link rel="stylesheet" href="../estilos/backgroung.css">
-    <link rel="stylesheet" href="../estilos/estilos_compartir/estilosCompartir.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../estilos//estilos_compartir/estilosCompartir.css">
 </head>
+
 <body>
-<header>
-    <button class="secondary-button" onclick="window.history.back();" aria-label="Retroceder">
-        <i class="fas fa-arrow-left"></i>
+    <button class="home-button" onclick="window.location.href='menuPrincipal.html'">
+        <img src="https://cdn-icons-png.flaticon.com/128/507/507257.png" alt="Home">
     </button>
-</header>
-
-<div class="main-container">
-    <div class="content-container">
-        <div class="tools-list">
-            <!-- Aquí se mostrará la imagen recibida -->
-            <img id="imagenRecibida" alt="Imagen recibida" aria-describedby="descripcion-imagen">
-            <!-- Descripción para el screen reader -->
-            <p id="descripcion-imagen" class="sr-only">Imagen compartida por el usuario.</p>
+    <div class="main-container">
+        <!-- Contenedor de la imagen seleccionada -->
+        <div class="left-container">
+            <h3 id="selected-title">Imagen seleccionada</h3>
+            <img id="selected-image" src="../assets/plantillas/gato.webp" alt="Imagen seleccionada">
         </div>
-        <div class="formulario">
-            <form id="formulario-correo">
-                <label for="titulo">Título:</label>
-                <input type="text" id="titulo" name="titulo" required aria-required="true" aria-label="Ingresa el título del dibujo">
 
-                <label for="email">Correo electrónico:</label>
-                <input type="email" id="email" name="email" required aria-required="true" aria-label="Ingresa tu correo electrónico">
-                
-                <button type="submit" aria-label="Enviar formulario">Enviar</button>
+        <!-- Contenedor del Formulario -->
+        <div class="right-container">
+            <form action="#" method="post">
+                <label for="art-title">Nombre de tu obra de arte</label>
+                <input type="text" id="art-title" name="art-title" required>
+
+                <label for="name">Ingresa tu nombre</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" required>
+
+                <button type="submit">Enviar</button>
             </form>
         </div>
     </div>
-</div>
-<footer>
-    
-</footer>
-<script>
-        // Función para recibir y mostrar la imagen
-        function recibirImagen() {
-        const imagenRecibida = document.getElementById('imagenRecibida');
-        const imagenBase64 = localStorage.getItem('imagenCompartida');
-
-        if (imagenBase64) {
-            imagenRecibida.src = imagenBase64; // Mostrar la imagen recibida
-            localStorage.removeItem('imagenCompartida'); // Limpiar el LocalStorage
-        } else {
-            // Si no hay imagen en LocalStorage, mostrar la imagen predeterminada
-            imagenRecibida.src = '../assets/imagenes/Dibujo.png';
-            console.log('No se recibió ninguna imagen. Mostrando imagen predeterminada.');
-        }
-    }
-
-    // Llamar a la función al cargar la página
-    window.onload = recibirImagen;
-
-    // Manejar el envío del formulario
-    document.getElementById('formulario-correo').addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const titulo = document.getElementById('titulo').value;
-        const email = document.getElementById('email').value;
-        const imagenRecibida = document.getElementById('imagenRecibida');
-
-        if (!titulo || !email || !imagenRecibida.src) {
-            alert('Por favor, completa todos los campos.');
-            return;
-        }
-
-        // Obtener la imagen en base64 desde el src de la imagen recibida
-        const imagenBase64 = imagenRecibida.src.split(',')[1]; // Obtener solo la parte base64
-
-        // Enviar los datos al backend
-        fetch('http://localhost:5000/enviar-correo', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                titulo: titulo,
-                email: email,
-                imagen: imagenBase64,
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Correo enviado correctamente');
-            } else {
-                alert('Error al enviar el correo');
-            }
-        })
-        .catch(error => {
-            console.error(error);
-            alert('Error al enviar el correo');
-        });
-    });
-</script>
-<script src="../scripts/cargarFoto.js"></script>
 </body>
+
 </html>
