@@ -17,11 +17,10 @@ const { Camera } = window;
 const { Hands } = window;
 let isDrawing = false;
 let handDrawingEnabled = false;
-
+let cameraStream; // Declara cameraStream para guardar el stream de la cámara
 // Declara hands y camera como variables globales
 let hands;
 let camera;
-let cameraStream;
 
 //FUNCIONES QUE CREAN O MODIFICAN ELEMENTOS DIRECTAMENTE EN EL ARBOL DE ELEMENTOS HTML
 function ocultarCanvas() {
@@ -345,6 +344,7 @@ function captureImage() {
 }
 
 
+
 function setupMediaPipe() {
     hands = new Hands({
         locateFile: (file) => {
@@ -372,6 +372,7 @@ function setupMediaPipe() {
     });
 
     camera.start();
+    cameraStream = camera.stream;  // Guarda el stream de la cámara
 }
 
 function toggleCamera() {
@@ -381,10 +382,10 @@ function toggleCamera() {
 
     if (webcam.style.display !== "none") {
         // Si la cámara está visible, apágala
-        if (camera) {
-            const tracks = camera.getTracks();
+        if (cameraStream) {
+            const tracks = cameraStream.getTracks();
             tracks.forEach(track => track.stop()); // Detener todos los tracks
-            camera = null; // Limpiar la referencia al stream
+            cameraStream = null; // Limpiar la referencia al stream
         }
         webcam.style.display = "none"; // Ocultar el video
         cameraContainer.classList.add("hidden"); // Ocultar el contenedor de la cámara
@@ -393,7 +394,7 @@ function toggleCamera() {
         // Si la cámara está oculta, enciéndela
         navigator.mediaDevices.getUserMedia({ video: true })
             .then((stream) => {
-                camera = stream; // Guardar el stream de la cámara
+                cameraStream = stream; // Guardar el stream de la cámara
                 webcam.srcObject = stream; // Asignar el stream al video
                 webcam.style.display = "block"; // Mostrar el video
                 cameraContainer.classList.remove("hidden"); // Mostrar el contenedor de la cámara
