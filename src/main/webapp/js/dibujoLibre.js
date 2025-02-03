@@ -215,13 +215,6 @@ window.onload = function () {   //cargar dibujo
     localStorage.removeItem("selectedDrawing");
 };
 
-function deleteDrawing(index) {
-    const drawings = JSON.parse(localStorage.getItem("drawings")) || [];
-    drawings.splice(index, 1);
-    localStorage.setItem("drawings", JSON.stringify(drawings));
-    showSuccessMessage("¡Dibujo Borrado con éxito!");
-}
-
 //FUNCIONES QUE REQUIEREN CONFIRMACIÓN
 //Guardar
 export function saveDrawingWithConfirmation() {
@@ -232,15 +225,7 @@ export function saveDrawingWithConfirmation() {
         () => { } // Acción si rechaza
     );
 }
-//Borrar
-export function deleteDrawingWithConfirmation() {
-    showDialog(
-        "Eliminar Dibujo",
-        "¿Estás seguro de que quieres eliminar este dibujo?",
-        deleteDrawing, // Acción si acepta
-        () => { } // Acción si rechaza
-    );
-}
+
 //Descargar
 export function downloadDrawingWithConfirmation() {
     showDialog(
@@ -251,32 +236,6 @@ export function downloadDrawingWithConfirmation() {
     );
 }
 
-export function loadGallery() {
-    const gallery = document.getElementById("gallery");
-    gallery.innerHTML = "";
-
-    const drawings = JSON.parse(localStorage.getItem("drawings")) || [];
-    drawings.forEach((drawing, index) => {
-        const thumbnail = document.createElement("div");
-        thumbnail.className = "thumbnail";
-
-        const img = document.createElement("img");
-        img.src = drawing;
-        img.alt = `Dibujo ${index + 1}`;
-        img.onclick = () => {
-            localStorage.setItem("selectedDrawing", JSON.stringify(drawing)); // Guardamos el dibujo seleccionado
-            window.location.href = "./dibujoLibre.html"; // Redirigir a la página de dibujo
-        };
-
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Eliminar";
-        deleteButton.onclick = () => deleteDrawing(index);
-
-        thumbnail.appendChild(img);
-        thumbnail.appendChild(deleteButton);
-        gallery.appendChild(thumbnail);
-    });
-}
 
 window.deshacer = deshacer;
 window.setColor = setColor;
@@ -284,9 +243,7 @@ window.setGrosor = setGrosor;
 window.clearLienzo = clearLienzo;
 window.toggleColors = toggleColors;
 window.setHerramienta = setHerramienta;
-window.loadGallery = loadGallery;
 window.cargarPlantilla = cargarPlantilla;
 window.toggleGrosor = toggleGrosor;
 window.saveDrawingWithConfirmation = saveDrawingWithConfirmation;
-window.deleteDrawingWithConfirmation = deleteDrawingWithConfirmation;
 window.downloadDrawingWithConfirmation = downloadDrawingWithConfirmation;
