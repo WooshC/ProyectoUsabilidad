@@ -1,0 +1,25 @@
+/* Estilos para el menú lateral */
+#imageMenu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+#imageMenu img {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.image-container {
+    display: flex;
+    flex-direction: column;
+}
