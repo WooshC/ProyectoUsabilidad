@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HandiDraw - Inicio</title>
+  <link rel="stylesheet" href="../estilos/backgroung.css">
+  <link rel="stylesheet" href="../estilos/nubes.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<!-- Main Content -->
+<main id="main-content">
+  <div class="container" role="img" aria-label="Dibujo de nubes para el fondo.">
+    <img src="../assets/imagenes/Vector%201.png" alt="Dibujo de nubes 1">
+  </div>
+  <div class="container" role="img" aria-label="Dibujo de nubes con variaciones.">
+    <img src="../assets/imagenes/Vector%203.png" alt="Dibujo de nubes 2">
+  </div>
+  <div class="container" role="img" aria-label="Otra variante del dibujo de nubes.">
+    <img src="../assets/imagenes/Vector%203.png" alt="Dibujo de nubes 3">
+  </div>
+  <div class="container" role="img" aria-label="Otra versión del dibujo de nubes.">
+    <img src="../assets/imagenes/Vector%201.png" alt="Dibujo de nubes 4">
+  </div>
+
+  <!-- Contenedor Central con el Texto "HandiDraw" -->
+  <div class="central-container" role="heading" aria-level="1">
+    Handi
+    <br>
+    <div class="central-container-letters" aria-label="Texto estilizado de la palabra Draw">
+      <span class="letter">D</span><span class="letter">r</span><span class="letter">a</span><span class="letter">w</span>
+    </div>
+  </div>
+
+  <!-- Contenedor con el botón Play -->
+  <div class="play-button-container">
+    <button class="play-button" onclick="playAction()" aria-label="Iniciar juego" tabindex="0">
+      <i class="fa-solid fa-play" aria-hidden="true"></i>
+    </button>
+  </div>
+</main>
+
+<!-- Contenedor superpuesto en la esquina inferior derecha -->
+<div class="footer-container" role="contentinfo" tabindex="0">
+  <p>Creado por: <strong>Softech</strong></p>
+</div>
+
+<!-- JavaScript para la interacción -->
+<script>
+  function playAction() {
+    // Redirige a la página 'menuPrincipal.html'
+    window.location.href = 'menuPrincipal.html';
+  }
+</script>
+
+</body>
+</html>
