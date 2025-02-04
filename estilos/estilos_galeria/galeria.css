@@ -1,0 +1,253 @@
+body {
+    font-family: 'Comic Sans MS', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.carousel-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    max-width: 1310px;
+    overflow: hidden;
+    margin-top: 125px;
+}
+
+.carousel {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.lienzo {
+    background-color: #D1B27A;
+    border: 1px solid #000;
+    width: 400;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 0 15px;
+    flex: 0 0 auto;
+}
+
+.lienzo img {
+    width: 100%;
+    height: 100%;
+}
+
+.button {
+    background: rgba(0, 0, 0, 0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    padding: 10px;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    z-index: 10;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.button:hover {
+    background: rgba(0, 0, 0, 0.5);
+    color: #f3a953;
+}
+
+.button-left {
+    left: 10px;
+}
+
+.button-right {
+    right: 10px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.control-group span {
+    font-size: 18px;
+    color: #333;
+}
+
+.controls button {
+    width: 70px;
+    height: 70px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    background: #f3a953;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.controls button:hover {
+    background: #d08c60;
+    transform: scale(1.1);
+}
+
+.controls button img {
+    width: 32px;
+    height: 32px;
+}
+
+.home-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #d08c60;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+}
+
+.home-button:hover {
+    background-color: #a56f45;
+}
+
+.home-button img {
+    width: 30px;
+    height: 30px;
+}
+
+h1 {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.5em;
+    margin: 0;
+    text-align: center;
+}
+
+/* Media Queries para Responsive Design */
+@media (max-width: 1200px) {
+    .carousel-container {
+        max-width: 900px;
+    }
+
+    .lienzo {
+        width: 300px;
+        height: 165px;
+    }
+
+    .button {
+        font-size: 20px;
+        padding: 8px;
+    }
+
+    .controls button {
+        width: 60px;
+        height: 60px;
+    }
+
+    .controls button img {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-container {
+        max-width: 600px;
+    }
+
+    .lienzo {
+        width: 250px;
+        height: 140px;
+        margin: 0 10px;
+    }
+
+    .button {
+        font-size: 18px;
+        padding: 6px;
+    }
+
+    .controls {
+        gap: 30px;
+    }
+
+    .controls button {
+        width: 50px;
+        height: 50px;
+    }
+
+    .controls button img {
+        width: 24px;
+        height: 24px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-container {
+        max-width: 100%;
+    }
+
+    .lienzo {
+        width: 200px;
+        height: 110px;
+        margin: 0 5px;
+    }
+
+    .button {
+        font-size: 16px;
+        padding: 5px;
+    }
+
+    .controls {
+        gap: 20px;
+    }
+
+    .controls button {
+        width: 40px;
+        height: 40px;
+    }
+
+    .controls button img {
+        width: 20px;
+        height: 20px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+}
