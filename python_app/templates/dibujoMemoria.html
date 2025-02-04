@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../estilos/estilos_dibujo_libre/modal.css">
     <link rel="stylesheet" href="../estilos/backgroung.css">
     <script type="module" src="../scripts/js/dibujoLibre.js"></script>
-    <title>Prototipo Dibujo</title>
+    <title>HandiDraw - Dibujo de memoria</title>
     <link rel="stylesheet" href="../estilos/estilos_dibujo_libre/dibujoLibre.css">
     <link rel="stylesheet" href="../estilos/estilos_pintar_plantilla/menuDesplegable.css">
 
@@ -28,12 +28,16 @@
             <button class="tool" id="grosor" onclick="toggleGrosor()" alt="Seleccionar grosor">
                 <img src="https://cdn-icons-png.flaticon.com/128/815/815492.png" alt="Icono Grosor">Grosor
             </button>
-
             <div id="grosor-options" class="grosor-options-container">
                 <div class="grosor-box grosor-small" onclick="setGrosor('pequeño')"></div>
                 <div class="grosor-box grosor-medium" onclick="setGrosor('mediano')"></div>
                 <div class="grosor-box grosor-large" onclick="setGrosor('grande')"></div>
             </div>
+
+            <button class="tool" id="pencil" onclick="setHerramienta('lapiz')"
+                aria-label="Seleccionar herramienta lápiz">
+                <img src="https://cdn-icons-png.flaticon.com/128/2280/2280532.png" alt="Icono de lápiz">Lápiz
+            </button>
 
             <button class="tool" id="brush" onclick="setHerramienta('pincel')" alt="Herramienta pincel"><img
                     src="https://cdn-icons-png.flaticon.com/128/595/595743.png">Pincel</button>
@@ -134,7 +138,7 @@
                 imgElement.alt = path;
                 imgElement.onclick = () => selectImage(path);
                 imageContainer.appendChild(imgElement);
-            });            
+            });
         }
 
         // Función que se ejecuta al seleccionar una imagen
@@ -151,4 +155,5 @@
         window.toggleImageMenu = toggleImageMenu
     </script>
 </body>
+
 </html>

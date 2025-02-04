@@ -134,8 +134,8 @@
             const imageContainer = document.getElementById('imageContainer');
             const imagePaths = [
                 '../assets/plantillas/gato.webp',
-                '../assets/plantillas/koala.avif',
-                '../assets/plantillas/helados.avif'
+                '../assets/plantillas/koala.jpg',
+                '../assets/plantillas/helados.jpg'
             ];
 
             imagePaths.forEach(path => {
@@ -145,7 +145,7 @@
                 imgElement.onclick = () => selectImage(path);
                 imageContainer.appendChild(imgElement);
             });            
-            selectImage("../assets/plantillas/helados.avif")
+            selectImage("../assets/plantillas/helados.jpg")
         }
 
         // Función que se ejecuta al seleccionar una imagen
