@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../scripts/js/p5.js"></script>
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.js"></script>
+    <link rel="stylesheet" href="../estilos/estilos_dibujo_libre/modal.css">
+    <link rel="stylesheet" href="../estilos/backgroung.css">
+    <script type="module" src="../scripts/js/dibujoLibre.js"></script>
+    <title>HandiDraw - Pintar plantilla</title>
+    <link rel="stylesheet" href="../estilos/estilos_dibujo_libre/dibujoLibre.css">
+    <link rel="stylesheet" href="../estilos/estilos_pintar_plantilla/menuDesplegable.css">
+</head>
+
+<body>
+    <!-- Botón de regreso al inicio -->
+    <button class="home-button" onclick="window.location.href='menuPrincipal.html'" aria-label="Regresar al menú principal">
+        <img src="https://cdn-icons-png.flaticon.com/128/507/507257.png" alt="Icono de inicio">
+    </button>
+
+    <div class="contenedor">
+        <div class="menu-lateral">
+            <!-- Deshacer -->
+            <button class="tool" id="boton-deshacer" onclick="deshacer()" alt="Deshacer última acción" aria-label="Deshacer última acción" tabindex="0">
+                <img src="https://cdn-icons-png.flaticon.com/128/18149/18149393.png" alt="Icono de deshacer">Deshacer
+            </button>
+
+            <!-- Grosor -->
+            <button class="tool" id="grosor" onclick="toggleGrosor()" alt="Seleccionar grosor" aria-label="Seleccionar grosor" tabindex="0">
+                <img src="https://cdn-icons-png.flaticon.com/128/815/815492.png" alt="Icono Grosor">Grosor
+            </button>
+
+            <div id="grosor-options" class="grosor-options-container" aria-live="polite" aria-hidden="true">
+                <div class="grosor-box grosor-small" onclick="setGrosor('pequeño')" aria-label="Grosor pequeño"></div>
+                <div class="grosor-box grosor-medium" onclick="setGrosor('mediano')" aria-label="Grosor mediano"></div>
+                <div class="grosor-box grosor-large" onclick="setGrosor('grande')" aria-label="Grosor grande"></div>
+            </div>
+
+            <!-- Herramientas -->
+            <button class="tool" id="brush" onclick="setHerramienta('pincel')" alt="Herramienta pincel" aria-label="Seleccionar herramienta pincel" tabindex="0">
+                <img src="https://cdn-icons-png.flaticon.com/128/595/595743.png" alt="Icono de pincel">Pincel
+            </button>
+            <button class="tool" id="spray" onclick="setHerramienta('spray')" alt="Herramienta spray" aria-label="Seleccionar herramienta spray" tabindex="0">
+                <img src="https://cdn-icons-png.flaticon.com/128/4229/4229008.png" alt="Icono de spray">Spray
+            </button>
+            <button class="tool" id="fill" onclick="setHerramienta('pintura')" alt="Herramienta pintura" aria-label="Seleccionar herramienta pintura" tabindex="0">
+                <img src="https://cdn-icons-png.flaticon.com/128/1676/1676699.png" alt="Icono de relleno">Relleno
+            </button>
+            <button class="tool" id="eraser" onclick="setHerramienta('borrador')" alt="Herramienta borrador" aria-label="Seleccionar herramienta borrador" tabindex="0">
+                <img src="https://cdn-icons-png.flaticon.com/128/776/776194.png" alt="Icono de borrador">Borrador
+            </button>
+
+            <!-- Selección de color -->
+            <button class="tool" id="colors" onclick="toggleColors()" alt="Seleccionar color" aria-label="Seleccionar color" tabindex="0">
+                <span id="colorCircle" class="color-circle" aria-hidden="true"></span>
+                <span id="colorText">Color</span>
+            </button>
+            <div id="color-picker" class="color-picker-container" role="dialog" aria-labelledby="color-picker" aria-hidden="true">
+                <div class="color-box" style="background-color: black;" onclick="setColor('black')" aria-label="Negro"></div>
+                <div class="color-box" style="background-color: gray;" onclick="setColor('gray')" aria-label="Gris"></div>
+                <div class="color-box" style="background-color: maroon;" onclick="setColor('maroon')" aria-label="Marrón"></div>
+                <div class="color-box" style="background-color: blue;" onclick="setColor('blue')" aria-label="Azul"></div>
+                <div class="color-box" style="background-color: green;" onclick="setColor('green')" aria-label="Verde"></div>
+                <div class="color-box" style="background-color: yellow;" onclick="setColor('yellow')" aria-label="Amarillo"></div>
+                <div class="color-box" style="background-color: red;" onclick="setColor('red')" aria-label="Rojo"></div>
+                <div class="color-box" style="background-color: orange;" onclick="setColor('orange')" aria-label="Naranja"></div>
+                <div class="color-box" style="background-color: purple;" onclick="setColor('purple')" aria-label="Púrpura"></div>
+                <div class="color-box" style="background-color: pink;" onclick="setColor('pink')" aria-label="Rosa"></div>
+                <div class="color-box" style="background-color: white;" onclick="setColor('white')" aria-label="Blanco"></div>
+            </div>
+        </div>
+
+        <!-- Lienzo -->
+        <div class="lienzo" aria-live="polite" role="application" aria-labelledby="canvas">
+            <div id="canvas" aria-describedby="herramienta-actual"></div>
+        </div>
+
+        <!-- Botones de la parte superior -->
+        <div class="top-buttons">
+            <button class="tool" id="clearButton" onclick="clearLienzo()" alt="Limpiar lienzo" aria-label="Limpiar lienzo" tabindex="0">
+                <img src="https://cdn-icons-png.flaticon.com/128/10731/10731941.png" alt="Icono de limpiar">Reiniciar
+            </button>
+            <button class="tool" id="saveButton" onclick="saveDrawingWithConfirmation()" alt="Guardar lienzo en la galería" aria-label="Guardar lienzo" tabindex="0">
+                <img src="https://cdn-icons-png.flaticon.com/128/907/907027.png" alt="Icono de guardar">Guardar
+            </button>
+            <button class="tool" id="download" onclick="downloadDrawingWithConfirmation()" alt="Descargar lienzo" aria-label="Descargar lienzo" tabindex="0">
+                <img src="https://cdn-icons-png.flaticon.com/128/892/892634.png" alt="Icono de descargar">Descargar
+            </button>
+            <button class="tool" id="toggleMenu" onclick="toggleImageMenu()" alt="Cambiar Plantilla" aria-label="Cambiar plantilla" tabindex="0">
+                <img src="https://cdn-icons-png.flaticon.com/128/8630/8630282.png" alt="Icono de plantilla">Cambiar plantilla
+            </button>
+            <button class="action-btn" id="help" alt="Ayuda" onclick="window.location.href='preguntasFrecuentes.html'" aria-label="Mostrar ayuda" tabindex="0">
+                <img src="https://cdn-icons-png.flaticon.com/128/189/189665.png" alt="Icono de ayuda">
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="actionModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <h2 id="modalTitle">¿Estás seguro?</h2>
+            <p id="modalMessage">¿Deseas realizar esta acción?</p>
+            <div class="modal-actions">
+                <button id="confirmButton" class="modal-button" aria-label="Aceptar acción">Aceptar</button>
+                <button id="cancelButton" class="modal-button" aria-label="Cancelar acción">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor de mensaje de éxito -->
+    <div id="successMessage" class="success-message" role="alert" aria-live="assertive">
+        <p id="successText">¡Operación realizada con éxito!</p>
+    </div>
+
+    <!-- Menú de imágenes oculto -->
+    <div id="imageMenu" aria-hidden="true">
+        <div id="imageContainer" class="image-container">
+            <!-- Las imágenes se cargarán aquí dinámicamente -->
+        </div>
+    </div>
+
+    <script type="module">
+        // Función para mostrar/ocultar el menú de imágenes
+        export function toggleImageMenu() {
+            const menu = document.getElementById('imageMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+            menu.setAttribute('aria-hidden', menu.style.display === 'none');
+        }
+
+        // Función para cargar las imágenes desde una carpeta
+        function loadImagesFromFolder() {
+            const imageContainer = document.getElementById('imageContainer');
+            const imagePaths = [
+                '../assets/plantillas/gato.webp',
+                '../assets/plantillas/koala.jpg',
+                '../assets/plantillas/helados.jpg'
+            ];
+
+            imagePaths.forEach(path => {
+                const imgElement = document.createElement('img');
+                imgElement.src = path;
+                imgElement.alt = path;
+                imgElement.onclick = () => selectImage(path);
+                imageContainer.appendChild(imgElement);
+            });            
+            selectImage("../assets/plantillas/helados.jpg")
+        }
+
+        // Función que se ejecuta al seleccionar una imagen
+        function selectImage(imagePath) {
+            console.log('Imagen seleccionada:', imagePath);
+            cargarPlantilla(imagePath, 255); 
+            clearLienzo();
+            setColorLienzo("white");
+        };
+
+        window.onload = function () {
+            loadImagesFromFolder();
+            toggleImageMenu()
+        };
+
+        window.toggleImageMenu = toggleImageMenu
+    </script>
+
+</body>
+
+</html>
