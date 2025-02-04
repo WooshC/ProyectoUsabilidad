@@ -130,8 +130,44 @@ function showSuccessMessage(message) {
     }, 3000);
 }
 
+function obtenerUrlDeLaImagenSeleccionada() {
+    // Verifica si hay imágenes en el carrusel
+    if (totalCanvases === 0) {
+        console.error("No hay imágenes en el carrusel.");
+        return null;
+    }
+
+    // Obtén el índice de la imagen seleccionada
+    const selectedIndex = currentIndex + 1; // Ajusta según tu lógica
+
+    // Verifica si el índice es válido
+    if (selectedIndex < 0 || selectedIndex >= totalCanvases) {
+        console.error("Índice de imagen seleccionada no válido.");
+        return null;
+    }
+
+    // Obtén la URL de la imagen seleccionada
+    const selectedCanvas = canvases[selectedIndex];
+    const selectedImage = selectedCanvas.querySelector("img");
+    if (!selectedImage) {
+        console.error("No se encontró la imagen seleccionada.");
+        return null;
+    }
+
+    return selectedImage.src; // Devuelve la URL de la imagen
+}
+
 function shareCanvas() {
-    const currentCanvas = canvases[currentIndex + 1];
-    alert(`Compartiendo ${currentCanvas.textContent}`);
-    // Aquí puedes agregar la lógica para compartir el lienzo actual
+    const selectedImageUrl = obtenerUrlDeLaImagenSeleccionada(); // Obtén la URL de la imagen seleccionada
+
+    if (!selectedImageUrl) {
+        console.error("No se pudo obtener la URL de la imagen seleccionada.");
+        return;
+    }
+
+    // Guarda la URL en localStorage
+    localStorage.setItem('selectedImageUrl', selectedImageUrl);
+
+    // Redirige a la página de compartir
+    window.location.href = 'compartirYEnviar.html';
 }

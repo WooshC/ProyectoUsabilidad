@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HandiDraw - Compartir</title>
     <link rel="stylesheet" href="../estilos/backgroung.css">
-    <link rel="stylesheet" href="../estilos//estilos_compartir/estilosCompartir.css">
+    <link rel="stylesheet" href="../estilos/estilos_compartir/estilosCompartir.css">
 </head>
 
 <body>
@@ -37,6 +37,22 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Recupera la URL de la imagen desde localStorage
+            const selectedImageUrl = localStorage.getItem('selectedImageUrl');
+
+            // Si hay una URL guardada, actualiza la imagen en el contenedor
+            if (selectedImageUrl) {
+                const selectedImageElement = document.getElementById('selected-image');
+                selectedImageElement.src = selectedImageUrl;
+            } else {
+                // Si no hay imagen seleccionada, puedes mostrar un mensaje o una imagen por defecto
+                console.log('No se ha seleccionado ninguna imagen.');
+            }
+        });
+    </script>
 </body>
 
 </html>
