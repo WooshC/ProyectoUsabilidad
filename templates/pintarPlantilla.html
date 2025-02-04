@@ -166,7 +166,7 @@
             imagePaths.forEach(path => {
                 const imgElement = document.createElement('img');
                 imgElement.src = path;
-                const fileName = image.src.split('/').pop();
+                const fileName = imgElement.src.split('/').pop();
                 imgElement.alt = "Plantilla a pintar de " + fileName;
                 imgElement.tabIndex = "0";
                 imgElement.onclick = () => {

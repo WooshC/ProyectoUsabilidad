@@ -236,6 +236,7 @@ function saveDrawing() {
 //FUNCIONES QUE REQUIEREN CONFIRMACIÓN
 //Guardar
 export function saveDrawingWithConfirmation() {
+    herramientaActual = new Lapiz(p5instancia, colorActual, grosorTrazo);
     showDialog(
         "Guardar Dibujo",
         "¿Estás seguro de que quieres guardar este dibujo?",
@@ -245,6 +246,7 @@ export function saveDrawingWithConfirmation() {
 }
 //Descargar
 export function downloadDrawingWithConfirmation() {
+    herramientaActual = new Lapiz(p5instancia, colorActual, grosorTrazo);
     showDialog(
         "Descargar Dibujo",
         "¿Estás seguro de que quieres descargar este dibujo?",

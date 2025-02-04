@@ -176,7 +176,7 @@
 
                     const imgElement = document.createElement('img');
                     imgElement.src = path;
-                    const fileName = image.src.split('/').pop();
+                    const fileName = imgElement.src.split('/').pop();
                     imgElement.alt = "Imagen a calcar de "+ fileName;
                     imgElement.style.width = `${newWidth}px`;
                     imgElement.style.height = `${maxHeight}px`;
