@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../estilos/estilos_pagina_principal/paginaPrincipal.css">
     <link rel="stylesheet" href="../estilos/backgroung.css">
 </head>
+
 <body>
     <header>
         <h1 id="titulo">HandiDraw</h1>
@@ -55,8 +56,10 @@
             </div>
             <div class="preview" role="region" aria-labelledby="tutorial">
                 <div class="preview-container">
-                    <img src="" alt="Imagen de previsualización del tutorial" id="tutorial">
-                    <div class="play-button" role="button" aria-label="Reproducir tutorial" tabindex="0">▶️</div>
+                    <video id="tutorial-video" width="320" height="240" controls>
+                        <source src="../assets/imagenes/Tutorial-HandiDraw.mp4" type="video/mp4">
+                        Tu navegador no soporta el elemento de video.
+                    </video>
                 </div>
             </div>
         </div>
