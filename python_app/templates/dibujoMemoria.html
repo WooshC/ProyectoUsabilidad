@@ -87,8 +87,8 @@
                     src="https://cdn-icons-png.flaticon.com/128/892/892634.png">Descargar</button>
             <button class="tool" id="toggleMenu" onclick="toggleImageMenu()" alt="Cambiar Plantilla"><img
                     src="https://cdn-icons-png.flaticon.com/128/8630/8630282.png">Cambiar plantilla</button>
-            <button class="action-btn" id="help" onclick="window.location.href='preguntasFrecuentes.html'" alt="Ayuda"><img
-                    src="https://cdn-icons-png.flaticon.com/128/189/189665.png"></button>
+            <button class="action-btn" id="help" onclick="window.location.href='preguntasFrecuentes.html'"
+                alt="Ayuda"><img src="https://cdn-icons-png.flaticon.com/128/189/189665.png"></button>
         </div>
     </div>
 
@@ -135,8 +135,15 @@
             imagePaths.forEach(path => {
                 const imgElement = document.createElement('img');
                 imgElement.src = path;
-                imgElement.alt = path;
+                const fileName = image.src.split('/').pop();
+                imgElement.alt = "Imagen a memorizar de " + fileName;
+                imgElement.tabIndex = "0";
                 imgElement.onclick = () => selectImage(path);
+                imgElement.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter") { // Detecta la tecla Enter
+                        imgElement.click(); // Simula el clic en la imagen
+                    }
+                });
                 imageContainer.appendChild(imgElement);
             });
         }
