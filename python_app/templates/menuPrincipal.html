@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,59 +8,81 @@
     <link rel="stylesheet" href="../estilos/estilos_pagina_principal/paginaPrincipal.css">
     <link rel="stylesheet" href="../estilos/backgroung.css">
 </head>
-<body>
-<header>
-    <h1 id="titulo">HandiDraw</h1>
-</header>
-<div class="main-container">
-    <div class="content-container">
-        <div class="tools-list" role="navigation" aria-labelledby="titulo">
-            <h2 id="menu-titulo">Menú</h2>
-            <!-- Menú desplegable para móviles -->
-            <select class="mobile-tools" aria-label="Selecciona una herramienta de dibujo">
-                <option value="pencil" onclick="window.location.href = 'dibujoLibre.html'">Dibujo Libre</option>
-                <option value="brush">Pintar plantilla</option>
-                <option value="spray">Dibujo de memoria</option>
-                <option value="eraser">Calcar dibujo</option>
-                <option value="fill">Imita y dibuja</option>
-            </select>
 
-            <!-- Lista normal para escritorio -->
-            <ul class="desktop-tools" role="menu" aria-labelledby="menu-titulo">
-                <li id="dibujo-libre" role="menuitem" tabindex="0" onclick="window.location.href = 'dibujoLibre.html'">
-                    <img src="https://cdn-icons-png.flaticon.com/128/595/595570.png" alt="Icono de Dibujo Libre">Dibujo Libre
-                </li>
-                <li id="pintar-plantilla" role="menuitem" tabindex="0" onclick="window.location.href = 'pintarPlantilla.html'">
-                    <img src="https://cdn-icons-png.flaticon.com/128/4229/4229137.png" alt="Icono de Pintar plantilla"> Pintar plantilla
-                </li>
-                <li id="memoria" role="menuitem" tabindex="0" onclick="window.location.href = 'temporizador.html'">
-                    <img src="https://cdn-icons-png.flaticon.com/128/7283/7283055.png" alt="Icono de Dibujo de memoria"> Dibujo de memoria
-                </li>
-                <li id="calcar-dibujo" role="menuitem" tabindex="0" onclick="window.location.href = 'dibujoLibre.html'">
-                    <img src="https://cdn-icons-png.flaticon.com/128/2722/2722267.png" alt="Icono de Calcar dibujo"> Calcar dibujo
-                </li>
-                <li id="imita-dibuja" role="menuitem" tabindex="0" onclick="window.location.href = 'imita-dibuja.html'">
-                    <img src="https://cdn-icons-png.flaticon.com/128/8171/8171324.png" alt="Icono de Imita y dibuja"> Imita y dibuja
-                </li>
-            </ul>
-        </div>
-        <div class="preview" role="region" aria-labelledby="tutorial">
-            <div class="preview-container">
-                <img src="" alt="Imagen de previsualización del tutorial" id="tutorial">
-                <div class="play-button" role="button" aria-label="Reproducir tutorial" tabindex="0">▶️</div>
+<body>
+    <header>
+        <h1 id="titulo">HandiDraw</h1>
+    </header>
+    <div class="main-container">
+        <div class="content-container">
+            <div class="tools-list" role="navigation" aria-labelledby="titulo">
+                <h2 id="menu-titulo">Menú</h2>
+                <!-- Menú desplegable para móviles -->
+                <select class="mobile-tools" aria-label="Selecciona una herramienta de dibujo">
+                    <option value="pencil" onclick="window.location.href = 'dibujoLibre.html'">Dibujo Libre</option>
+                    <option value="brush">Pintar plantilla</option>
+                    <option value="spray">Dibujo de memoria</option>
+                    <option value="eraser">Calcar dibujo</option>
+                    <option value="fill">Imita y dibuja</option>
+                </select>
+
+                <!-- Lista normal para escritorio -->
+                <ul class="desktop-tools" role="menu" aria-labelledby="menu-titulo">
+                    <li id="dibujo-libre" role="menuitem" tabindex="0"
+                        onclick="window.location.href = 'dibujoLibre.html'">
+                        <img src="https://cdn-icons-png.flaticon.com/128/595/595570.png"
+                            alt="Icono de Dibujo Libre">Dibujo Libre
+                    </li>
+                    <li id="pintar-plantilla" role="menuitem" tabindex="0"
+                        onclick="window.location.href = 'pintarPlantilla.html'">
+                        <img src="https://cdn-icons-png.flaticon.com/128/4229/4229137.png"
+                            alt="Icono de Pintar plantilla"> Pintar plantilla
+                    </li>
+                    <li id="memoria" role="menuitem" tabindex="0" onclick="window.location.href = 'temporizador.html'">
+                        <img src="https://cdn-icons-png.flaticon.com/128/7283/7283055.png"
+                            alt="Icono de Dibujo de memoria"> Dibujo de memoria
+                    </li>
+                    <li id="calcar-dibujo" role="menuitem" tabindex="0"
+                        onclick="window.location.href = 'dibujoLibre.html'">
+                        <img src="https://cdn-icons-png.flaticon.com/128/2722/2722267.png" alt="Icono de Calcar dibujo">
+                        Calcar dibujo
+                    </li>
+                    <li id="imita-dibuja" role="menuitem" tabindex="0"
+                        onclick="window.location.href = 'imita-dibuja.html'">
+                        <img src="https://cdn-icons-png.flaticon.com/128/8171/8171324.png"
+                            alt="Icono de Imita y dibuja"> Imita y dibuja
+                    </li>
+                </ul>
+            </div>
+            <div class="preview" role="region" aria-labelledby="tutorial">
+                <div class="preview-container">
+                    <img src="" alt="Imagen de previsualización del tutorial" id="tutorial">
+                    <div class="play-button" role="button" aria-label="Reproducir tutorial" tabindex="0">▶️</div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="bottom-menu" role="navigation" aria-label="Menú inferior">
-        <button onclick="window.location.href = 'logrosYRecompensas.html'" aria-label="Ir a la sección de logros">
-            <img src="https://cdn-icons-png.flaticon.com/128/1312/1312299.png" alt="Icono de Logros"> Logros
-        </button>
-        <button onclick="window.location.href = 'galeria.html'" aria-label="Ir a la galería">
-            <img src="https://cdn-icons-png.flaticon.com/128/11712/11712712.png" alt="Icono de Galería"> Galería
-        </button>
+        <div class="bottom-menu" role="navigation" aria-label="Menú inferior">
+            <button onclick="window.location.href = 'logrosYRecompensas.html'" aria-label="Ir a la sección de logros">
+                <img src="https://cdn-icons-png.flaticon.com/128/1312/1312299.png" alt="Icono de Logros"> Logros
+            </button>
+            <button onclick="window.location.href = 'galeria.html'" aria-label="Ir a la galería">
+                <img src="https://cdn-icons-png.flaticon.com/128/11712/11712712.png" alt="Icono de Galería"> Galería
+            </button>
+        </div>
     </div>
-</div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".desktop-tools li").forEach(function (item) {
+                item.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        this.click(); // Simula el clic en el elemento
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
+
 </html>
